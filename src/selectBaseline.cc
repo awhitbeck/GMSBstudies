@@ -1,12 +1,8 @@
-//#ifndef DISSECTINGJETMET
-//#define DISSECTINGJETMET
-//#include "dissectingJetsMET.cc"
-//#endif
-
 #ifndef SELECTBASELINE
 #define SELECTBASELINE
 
 #include "processor.h"
+#include "TH1F.h"
 #include <iostream>
 
 using namespace std;
@@ -31,11 +27,19 @@ public :
     else return false;
     if( ntuple->MHT>200. ) histo->Fill(2); 
     else return false;
-    if( ntuple->NJets>=2 ) histo->Fill(3);
+    if( ntuple->NJets>=4 ) histo->Fill(3);
     else return false;
-    if( ntuple->NLeptons <= 0 ) histo->Fill(4);
+    if( ntuple->Leptons == 0 ) histo->Fill(4);
     else return false;
-    if( ntuple->dPhi>0.3 ) histo->Fill(5);
+    if( ntuple->NumPhotons >= 1 ) histo->Fill(4);
+    else return false;
+    if( ntuple->DeltaPhi1>0.3 ) histo->Fill(5);
+    else return false;
+    if( ntuple->DeltaPhi2>0.3 ) histo->Fill(5);
+    else return false;
+    if( ntuple->DeltaPhi3>0.5 ) histo->Fill(5);
+    else return false;
+    if( ntuple->DeltaPhi4>0.5 ) histo->Fill(5);
     else return false;
 
     return true;

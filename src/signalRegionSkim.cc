@@ -38,7 +38,7 @@ int main(int argc, char** argv){
   a.looper();
 
   cout << "save tree" << endl;
-  TFile* outFile = new TFile("genericPlotter_"+sample+".root","UPDATE");
+  TFile* outFile = new TFile("signalRegionSkim_"+sample+".root","UPDATE");
 
   skimmer->skimTree->Write();
 

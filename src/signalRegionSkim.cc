@@ -18,8 +18,10 @@ using namespace std;
 int main(int argc, char** argv){
 
   TString sample = argv[1];
-  TChain* t = new TChain("TreeMaker2/PreSelection");
-  t->Add("Spring15v2.ZJetsToNuNu_HT-600ToInf_13TeV-madgraph_1_RA2AnalysisTree.root");
+  TChain* t = buildChain("inputFiles.txt",sample,"TreeMaker2/PreSelection");
+
+  //TChain* t = new TChain("TreeMaker2/PreSelection");
+  //t->Add("Spring15v2.ZJetsToNuNu_HT-600ToInf_13TeV-madgraph_1_RA2AnalysisTree.root");
 
   cout << "RA2bNtuple" << endl;
   RA2bNtuple *ntuple = new RA2bNtuple(t);

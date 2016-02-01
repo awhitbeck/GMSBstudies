@@ -23,6 +23,7 @@ TChain* buildChain(TString inputFileList, TString substr, TString treeName){
       if( line.find(substr.Data()) == string::npos ) continue;
 
       sprintf( temp , "root://cmsxrootd.fnal.gov//%s", line.c_str() );
+      cout << temp << endl;
       t->Add( temp );
 
     }// end while loop over lines in file

@@ -16,7 +16,9 @@ git clone https://github.com/awhitbeck/GMSBstudies.git
 g++ `root-config --cflags --glibs` -I./AnalysisTools/src/ -I./GMSBstudies/src/ GMSBstudies/src/signalRegionSkim.cc -o GMSBstudies/src/signalRegionSkim.exe
 ls
 echo "RUNNING ANALYSIS"
-./GMSBstudies/src/signalRegionSkim.exe $1
+
+cd GMSBstudies/src/
+./signalRegionSkim.exe $1
 ls
 echo "COPYING OUTPUT"
 xrdcp signalRegionSkim_${1}.root root://cmseos.fnal.gov//store/user/awhitbe1/GMSBstudies/skims/signalRegionSkim_${1}.root

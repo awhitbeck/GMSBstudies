@@ -17,29 +17,29 @@ public :
   selectBaseline(){ ntuple = 0; };
   selectBaseline( TreeType *ntuple_ ){
     ntuple = ntuple_;
-    histo = new TH1F("selectBaselineYields","selectBaselineYields",5,0.5,5.5);
+    histo = new TH1F("selectBaselineYields","selectBaselineYields",9,0.5,9.5);
   };
   
   bool process( ) override {
 
     histo->Fill(0);
-    if( ntuple->HT>500. ) histo->Fill(1);
+    if( ntuple->Leptons == 0 ) histo->Fill(1);
     else return false;
-    if( ntuple->MHT>200. ) histo->Fill(2); 
+    if( ntuple->NumPhotons >= 1 ) histo->Fill(2);
     else return false;
     if( ntuple->NJets>=4 ) histo->Fill(3);
     else return false;
-    if( ntuple->Leptons == 0 ) histo->Fill(4);
+    if( ntuple->HT>500. ) histo->Fill(4);
     else return false;
-    if( ntuple->NumPhotons >= 1 ) histo->Fill(4);
+    if( ntuple->MHT>0. ) histo->Fill(5); 
     else return false;
-    if( ntuple->DeltaPhi1>0.3 ) histo->Fill(5);
+    if( ntuple->DeltaPhi1>0.3 ) histo->Fill(6);
     else return false;
-    if( ntuple->DeltaPhi2>0.3 ) histo->Fill(5);
+    if( ntuple->DeltaPhi2>0.3 ) histo->Fill(7);
     else return false;
-    if( ntuple->DeltaPhi3>0.5 ) histo->Fill(5);
+    if( ntuple->DeltaPhi3>0.5 ) histo->Fill(8);
     else return false;
-    if( ntuple->DeltaPhi4>0.5 ) histo->Fill(5);
+    if( ntuple->DeltaPhi4>0.5 ) histo->Fill(9);
     else return false;
 
     return true;

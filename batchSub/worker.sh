@@ -21,4 +21,4 @@ cd GMSBstudies/src/
 ./signalRegionSkim.exe $1
 ls
 echo "COPYING OUTPUT"
-xrdcp signalRegionSkim_${1}.root root://cmseos.fnal.gov//store/user/awhitbe1/GMSBstudies/skims/signalRegionSkim_${1}.root
+xrdcp signalRegionSkim_${1}.root root://cmseos.fnal.gov//store/user/awhitbe1/GMSBstudies/skims/signalRegionSkim_${2}.root

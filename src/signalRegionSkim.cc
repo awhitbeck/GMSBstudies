@@ -2,6 +2,7 @@
 #include "analyzer.cc"
 #include "selectBaseline.cc"
 #include "skim.cc"
+#include "weightProducer.cc"
 
 #include "TString.h"
 #include "TChain.h"
@@ -31,9 +32,12 @@ int main(int argc, char** argv){
   selectBaseline<RA2bNtuple> *select = new selectBaseline<RA2bNtuple>(ntuple);
   cout << "analyzer" << endl;
   analyzer<RA2bNtuple> a(ntuple);
+  cout << "weightProducer" << endl;
+  weightProducer<RA2bNtuple> *wp = new weightProducer<RA2bNtuple>(ntuple,"Weight");
+  a.addProcessor( wp );
   a.addProcessor( select );
   a.addProcessor( skimmer );
-
+  
   cout << "loop" << endl;
   a.looper();
 
@@ -41,7 +45,8 @@ int main(int argc, char** argv){
   TFile* outFile = new TFile("signalRegionSkim_"+sample+".root","UPDATE");
 
   skimmer->skimTree->Write();
-
+  wp->events->Write();
+  wp->xsections->Write();
   select->histo->Write("baselineYields_"+sample);
   outFile->Close();
 

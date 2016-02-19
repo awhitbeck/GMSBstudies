@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sample="Spring15v2.GJets_HT-600ToInf"
+sample=""
 
 for i in $(grep $sample ../src/inputFiles.txt)
 do 

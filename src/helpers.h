@@ -7,6 +7,8 @@
 #include <iostream>
 #include <sstream>
 
+using namespace std;
+
 TChain* buildChain(TString inputFileList, TString substr, TString treeName){
 
   string line;

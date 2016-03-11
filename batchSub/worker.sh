@@ -3,23 +3,37 @@
 executable=$1
 inputFileTag=$2
 outputFileTag=$3
-
+commitHash=$4
 workingDir=$PWD
 
+######################################
+# SETUP CMSSW STUFF...
+######################################
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 scram p CMSSW CMSSW_7_4_2
 cd CMSSW_7_4_2/src
-
 eval `scramv1 runtime -sh`
-
 pwd
 
-git clone https://github.com/awhitbeck/AnalysisTools.git
-git clone https://github.com/awhitbeck/GMSBstudies.git
+######################################
+# SETUP PRIVATE STUFF...
+######################################
+echo "ls"
+ls
+cp ../../*.tar .
+mkdir GMSBstudies
+tar -xf GMSBstudies.tar -C GMSBstudies
+mkdir AnalysisTools
+tar -xf AnalysisTools.tar -C AnalysisTools
 
-cd GMSBstudies/batchSub
-commitHash=`git rev-parse HEAD`
-cd -
+echo "ls"
+ls
+echo "ls GMSBstudies"
+ls GMSBstudies
+echo "ls AnalysisTools"
+ls AnalysisTools
+
+echo $commitHash
 
 g++ `root-config --cflags --glibs` -I./AnalysisTools/src/ -I./GMSBstudies/src/ GMSBstudies/src/$executable.cc -o GMSBstudies/src/$executable.exe
 ls
@@ -30,7 +44,7 @@ cd GMSBstudies/src/
 ls
 echo "COPYING OUTPUT"
 
-mkdir /eos/uscms/store/user/awhitbe1/GMSBstudies/skims/${executable}
-mkdir /eos/uscms/store/user/awhitbe1/GMSBstudies/skims/${executable}/${commitHash}
+eosmkdir /eos/uscms/store/user/awhitbe1/GMSBstudies/${executable}
+eosmkdir /eos/uscms/store/user/awhitbe1/GMSBstudies/${executable}/${commitHash}
 
-xrdcp ${executable}_${inputFileTag}.root root://cmseos.fnal.gov//store/user/awhitbe1/GMSBstudies/skims/${executable}/${commitHash}/${executable}_${outputFileTag}.root
+xrdcp ${executable}_${inputFileTag}.root root://cmseos.fnal.gov//store/user/awhitbe1/GMSBstudies/${executable}/${commitHash}/${executable}_${outputFileTag}.root

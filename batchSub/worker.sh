@@ -30,5 +30,7 @@ cd GMSBstudies/src/
 ls
 echo "COPYING OUTPUT"
 
-mkdir awhitbe1/GMSBstudies/skims/${executable}/${commitHash}
-xrdcp ${executable}_${inputFileTag}.root root://cmseos.fnal.gov//store/user/awhitbe1/GMSBstudies/skims/${executable}/${commitHash}/signalRegionSkim_${outputFileTag}.root
+mkdir /eos/uscms/store/user/awhitbe1/GMSBstudies/skims/${executable}
+mkdir /eos/uscms/store/user/awhitbe1/GMSBstudies/skims/${executable}/${commitHash}
+
+xrdcp ${executable}_${inputFileTag}.root root://cmseos.fnal.gov//store/user/awhitbe1/GMSBstudies/skims/${executable}/${commitHash}/${executable}_${outputFileTag}.root

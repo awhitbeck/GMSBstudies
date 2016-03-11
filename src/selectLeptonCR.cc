@@ -1,32 +1,29 @@
-#ifndef SELECTBASELINE
-#define SELECTBASELINE
+#ifndef SELECTLEPTONCR
+#define SELECTLEPTONCR
 
 #include "processor.h"
-
 #include "TH1F.h"
-#include "TLorentzVector.h"
-
 #include <iostream>
 
 using namespace std;
 
-template <class TreeType> class selectBaseline : public processor<TreeType> {
+template <class TreeType> class selectLeptonCR : public processor<TreeType> {
 
 public : 
 
   TH1F* histo;
   TreeType* ntuple;
 
-  selectBaseline()
-    : processor<TreeType>("selectBaseline")
+  selectLeptonCR()
+    : processor<TreeType>("selectLeptonCR")
   {
     ntuple = 0; 
   };
-  selectBaseline( TreeType *ntuple_ )
-    : processor<TreeType>("selectBaseline")
+  selectLeptonCR( TreeType *ntuple_ )
+    : processor<TreeType>("selectLeptonCR")
   {
     ntuple = ntuple_;
-    histo = new TH1F("selectBaselineYields","selectBaselineYields",9,0.5,9.5);
+    histo = new TH1F("leptonCRYields","leptonCRYields",9,0.5,9.5);
   };
 
   bool process( ) override {
@@ -34,7 +31,7 @@ public :
     ntuple->patchJetID();
 
     histo->Fill(0);
-    if( ntuple->Leptons == 0 ) histo->Fill(1);
+    if( ntuple->Leptons == 1 ) histo->Fill(1);
     else return false;
     if( ntuple->NumPhotons >= 1 ) histo->Fill(2);
     else return false;

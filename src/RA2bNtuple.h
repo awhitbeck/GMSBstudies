@@ -25,6 +25,8 @@ public :
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
+   vector<TString> branchMask;
+
    // Declaration of leaf types
    UInt_t          RunNum;
    UInt_t          LumiBlockNum;
@@ -640,6 +642,9 @@ public :
    virtual void     Loop();
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
+   void setStatus( bool status );
+   void patchJetID();
+
 };
 
 #endif
@@ -665,6 +670,18 @@ RA2bNtuple::~RA2bNtuple()
 {
    if (!fChain) return;
    delete fChain->GetCurrentFile();
+}
+
+void RA2bNtuple::setStatus( bool status ){
+
+  if( status ){
+    fChain->SetBranchStatus("*",0);
+    for( unsigned int iBranch = 0 ; iBranch < branchMask.size() ; iBranch++ ){
+      fChain->SetBranchStatus(branchMask[iBranch],1);
+    } 
+  }else
+    fChain->SetBranchStatus("*",0);
+
 }
 
 Int_t RA2bNtuple::GetEntry(Long64_t entry)
@@ -1179,6 +1196,38 @@ void RA2bNtuple::Init(TTree *tree)
    fChain->SetBranchAddress("ZCandidates", &ZCandidates, &b_ZCandidates);
    Notify();
 }
+
+void RA2bNtuple::patchJetID(){
+  
+  HT = 0. ;
+  NJets = 0 ;
+  JetID = true ; 
+  
+  vector<TLorentzVector> jets = *slimJet;
+  TLorentzVector mht(0.,0.,0.,0.);
+
+  for( unsigned int i = 0 ; i < jets.size() ; i++ ){
+    if( jets[i].Pt()>30. ){
+      if( fabs(jets[i].Eta())<2.4 ){
+	HT+=jets[i].Pt();
+	NJets++;
+      }
+      if( fabs(jets[i].Eta())<5.0){
+	mht += TLorentzVector(jets[i].Px(),jets[i].Py(),0.,0.) ;
+      }
+    }else{
+      // this explicitly assumes that the vector is ordered!
+      break;
+    }
+    if( slimJet_slimJetID == 0 && jets[i].Pt()>30. && jets[i].DeltaR((*bestPhoton)[0])>0.4 )
+      JetID = false ; 
+  }
+  
+  MHT = mht.Pt();
+  MHT_Phi = mht.Phi();
+
+}
+
 
 Bool_t RA2bNtuple::Notify()
 {

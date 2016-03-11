@@ -1,32 +1,29 @@
-#ifndef SELECTBASELINE
-#define SELECTBASELINE
+#ifndef SELECTLOWDPHICR
+#define SELECTLOWDPHICR
 
 #include "processor.h"
-
 #include "TH1F.h"
-#include "TLorentzVector.h"
-
 #include <iostream>
 
 using namespace std;
 
-template <class TreeType> class selectBaseline : public processor<TreeType> {
+template <class TreeType> class selectLowDphiCR : public processor<TreeType> {
 
 public : 
 
   TH1F* histo;
   TreeType* ntuple;
 
-  selectBaseline()
-    : processor<TreeType>("selectBaseline")
+  selectLowDphiCR()
+    : processor<TreeType>("selectLowDphiCR")
   {
     ntuple = 0; 
   };
-  selectBaseline( TreeType *ntuple_ )
-    : processor<TreeType>("selectBaseline")
+  selectLowDphiCR( TreeType *ntuple_ )
+    : processor<TreeType>("selectLowDphiCR")
   {
     ntuple = ntuple_;
-    histo = new TH1F("selectBaselineYields","selectBaselineYields",9,0.5,9.5);
+    histo = new TH1F("lowDphiCRYields","lowDphiCRYields",9,0.5,9.5);
   };
 
   bool process( ) override {
@@ -44,13 +41,7 @@ public :
     else return false;
     if( ntuple->MHT>0. ) histo->Fill(5); 
     else return false;
-    if( ntuple->DeltaPhi1>0.5 ) histo->Fill(6);
-    else return false;
-    if( ntuple->DeltaPhi2>0.5 ) histo->Fill(7);
-    else return false;
-    if( ntuple->DeltaPhi3>0.3 ) histo->Fill(8);
-    else return false;
-    if( ntuple->DeltaPhi4>0.3 ) histo->Fill(9);
+    if( ntuple->DeltaPhi1<0.5 || ntuple->DeltaPhi2<0.5 || ntuple->DeltaPhi3<0.3 || ntuple->DeltaPhi4<0.3 ) histo->Fill(6);
     else return false;
 
     return true;

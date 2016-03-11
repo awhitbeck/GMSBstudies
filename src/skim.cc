@@ -8,8 +8,14 @@ public :
   TreeType *ntuple ; 
   TTree* skimTree;
   
-  skim(){ ntuple=0; skimTree=0 ;};
-  skim( TreeType* ntuple_ ){
+  skim()
+    : processor<TreeType>("skim")
+  { 
+    ntuple=0; skimTree=0 ;
+  };
+  skim( TreeType* ntuple_ )
+    : processor<TreeType>("skim")
+  {
     ntuple = ntuple_ ;
     skimTree = ntuple->fChain->CloneTree(0);
   };

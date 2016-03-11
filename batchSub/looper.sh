@@ -80,3 +80,4 @@ python spawnJobs.py -s ZJetsToNuNu_HT-600ToInf
 python spawnJobs.py -s ZZTo2L2Q
 python spawnJobs.py -s ZZZ
 python spawnJobs.py -s ttHJetTobb
+python spawnJobs.py -s SMS-T5Wg_mGl-1550_mNLSP-0to1500

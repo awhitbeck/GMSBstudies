@@ -1,5 +1,5 @@
 import os
-
+import subprocess
 from optparse import OptionParser
 
 parser = OptionParser()
@@ -14,15 +14,17 @@ parser.add_option("-e", "--exec", dest="executable", default="baselinePlots",
 
 if options.name == "" : options.name = options.sample
 
-###############################################
-# I would like to have this script create a 
-# new directory in my eos area every time 
-# a new batch of jobs is submitted.  
-# The code should check if a directory corresponding
-# to the origin/master hash was created, if so, 
-# report to the user and stop. If not, create the 
-# directory and submit the jobs. 
-###############################################
+##########################
+# archive repos for copying
+# to worker nodes
+##########################
+os.system("cd ../ ; rm GMSBstudies.tar ; git archive master -o GMSBstudies.tar")
+os.system("cd ../../AnalysisTools ; rm AnalysisTools.tar ; git archive master -o AnalysisTools.tar")
+
+commitHash = subprocess.check_output("cd ../ ; git rev-parse HEAD",shell=True)
+
+os.system("eos root://cmseos.fnal.gov mkdir /eos/uscms/store/user/awhitbe1/GMSBstudies/{0}".format(options.executable))
+os.system("eos root://cmseos.fnal.gov mkdir /eos/uscms/store/user/awhitbe1/GMSBstudies/{0}/{1}".format(options.executable,commitHash))
 
 jdlFile = """universe = vanilla
 Executable = worker.sh
@@ -31,7 +33,7 @@ request_disk = 10000000
 request_memory = 10000
 Should_Transfer_Files = YES
 WhenToTransferOutput = ON_EXIT_OR_EVICT
-Transfer_Input_Files = worker.sh
+Transfer_Input_Files = ../GMSBstudies.tar, ../../AnalysisTools/AnalysisTools.tar
 PeriodicRemove = ( JobStatus == 2 ) && ( ( CurrentTime - EnteredCurrentStatus ) > 200000 )
 Output = {0}_{1}.stdout
 Error = {0}_{1}.stderr
@@ -39,8 +41,8 @@ Log = {0}_{1}.condor
 notification = Error
 notify_user = awhitbe1@FNAL.GOV
 x509userproxy = $ENV(X509_USER_PROXY)
-Arguments = {0} {1} {2}
-Queue 1""".format(options.executable,options.sample,options.name)
+Arguments = {0} {1} {2} {3}
+Queue 1""".format(options.executable,options.sample,options.name,commitHash)
 
 outputFile = open("{0}_{1}.jdl".format(options.executable,options.name),'w')
 outputFile.write(jdlFile)

@@ -44,7 +44,6 @@ cd GMSBstudies/src/
 ls
 echo "COPYING OUTPUT"
 
-eos root://cmseos.fnal.gov mkdir /eos/uscms/store/user/awhitbe1/GMSBstudies/${executable}
-eos root://cmseos.fnal.gov mkdir /eos/uscms/store/user/awhitbe1/GMSBstudies/${executable}/${commitHash}
-
-xrdcp ${executable}_${inputFileTag}.root root://cmseos.fnal.gov//store/user/awhitbe1/GMSBstudies/${executable}/${commitHash}/${executable}_${outputFileTag}.root
+for i in $( ls | grep root ) ; do 
+    xrdcp $i root://cmseos.fnal.gov//store/user/awhitbe1/GMSBstudies/${executable}/${commitHash}/$i
+done

@@ -1,83 +1,85 @@
 #!/bin/sh
 
-#python spawnJobs.py -s Run2015C_25ns-05Oct2015-v1.DoubleEG
-#python spawnJobs.py -s Run2015C_25ns-05Oct2015-v1.HTMHT
-#python spawnJobs.py -s Run2015C_25ns-05Oct2015-v1.JetHT
-#python spawnJobs.py -s Run2015C_25ns-05Oct2015-v1.MET
-#python spawnJobs.py -s Run2015C_25ns-05Oct2015-v1.SingleElectron
-#python spawnJobs.py -s Run2015C_25ns-05Oct2015-v1.SingleMuon
-#python spawnJobs.py -s Run2015C_25ns-05Oct2015-v1.SinglePhoton
-#python spawnJobs.py -s Run2015D-05Oct2015-v1.DoubleEG
-#python spawnJobs.py -s Run2015D-05Oct2015-v1.DoubleMuon
-#python spawnJobs.py -s Run2015D-05Oct2015-v1.HTMHT
-#python spawnJobs.py -s Run2015D-05Oct2015-v1.JetHT
-#python spawnJobs.py -s Run2015D-05Oct2015-v1.MET
-#python spawnJobs.py -s Run2015D-05Oct2015-v1.SingleElectron
-#python spawnJobs.py -s Run2015D-05Oct2015-v1.SingleMuon
-#python spawnJobs.py -s Run2015D-05Oct2015-v1.SinglePhoton
-#python spawnJobs.py -s Run2015D-PromptReco-v4.DoubleEG
-#python spawnJobs.py -s Run2015D-PromptReco-v4.DoubleMuon
-#python spawnJobs.py -s Run2015D-PromptReco-v4.HTMHT
-#python spawnJobs.py -s Run2015D-PromptReco-v4.JetHT
-#python spawnJobs.py -s Run2015D-PromptReco-v4.MET
-#python spawnJobs.py -s Run2015D-PromptReco-v4.SingleElectron
-#python spawnJobs.py -s Run2015D-PromptReco-v4.SingleMuon
-#python spawnJobs.py -s Run2015D-PromptReco-v4.SinglePhoton
+executable="doSkims"
 
-python spawnJobs.py -s DYJetsToLL_M-50_HT-100to200
-python spawnJobs.py -s DYJetsToLL_M-50_HT-200to400
-python spawnJobs.py -s DYJetsToLL_M-50_HT-400to600
-python spawnJobs.py -s DYJetsToLL_M-50_HT-600toInf
-python spawnJobs.py -s DYJetsToLL_M-50_TuneCUETP8M1
-python spawnJobs.py -s GJets_HT-100To200
-python spawnJobs.py -s GJets_HT-200To400
-python spawnJobs.py -s GJets_HT-400To600
-python spawnJobs.py -s GJets_HT-600ToInf
-python spawnJobs.py -s QCD_HT1000to1500
-python spawnJobs.py -s QCD_HT1500to2000
-python spawnJobs.py -s QCD_HT2000toInf
-python spawnJobs.py -s QCD_HT200to300
-python spawnJobs.py -s QCD_HT300to500
-python spawnJobs.py -s QCD_HT500to700
-python spawnJobs.py -s QCD_HT700to1000
-python spawnJobs.py -s ST_s-channel_4f_leptonDecays
-python spawnJobs.py -s ST_t-channel_antitop_4f_leptonDecays
-python spawnJobs.py -s ST_t-channel_top_4f_leptonDecays
-python spawnJobs.py -s ST_tW_antitop_5f_inclusiveDecays
-python spawnJobs.py -s ST_tW_top_5f_inclusiveDecays
-python spawnJobs.py -s TTJets_DiLept
-python spawnJobs.py -s TTJets_HT-1200to2500
-python spawnJobs.py -s TTJets_HT-2500toInf
-python spawnJobs.py -s TTJets_HT-600to800
-python spawnJobs.py -s TTJets_HT-800to1200
-python spawnJobs.py -s TTJets_SingleLeptFromT
-python spawnJobs.py -s TTJets_SingleLeptFromTbar
-python spawnJobs.py -s TTJets_TuneCUETP8M1
-python spawnJobs.py -s TTTT_TuneCUETP8M1
-python spawnJobs.py -s TTWJetsToLNu
-python spawnJobs.py -s TTWJetsToQQ
-python spawnJobs.py -s TTZToLLNuNu
-python spawnJobs.py -s TTZToQQ
-python spawnJobs.py -s WH_HToBB
-python spawnJobs.py -s WJetsToLNu_HT-100To200
-python spawnJobs.py -s WJetsToLNu_HT-1200To2500
-python spawnJobs.py -s WJetsToLNu_HT-200To400
-python spawnJobs.py -s WJetsToLNu_HT-2500ToInf
-python spawnJobs.py -s WJetsToLNu_HT-400To600
-python spawnJobs.py -s WJetsToLNu_HT-600To800
-python spawnJobs.py -s WJetsToLNu_HT-800To1200
-python spawnJobs.py -s WWTo1L1Nu2Q
-python spawnJobs.py -s WWTo2L2Nu
-python spawnJobs.py -s WWZ
-python spawnJobs.py -s WZTo1L1Nu2Q
-python spawnJobs.py -s WZTo1L3Nu
-python spawnJobs.py -s WZZ
-python spawnJobs.py -s ZH_HToBB_ZToNuNu
-python spawnJobs.py -s ZJetsToNuNu_HT-100To200
-python spawnJobs.py -s ZJetsToNuNu_HT-200To400
-python spawnJobs.py -s ZJetsToNuNu_HT-400To600
-python spawnJobs.py -s ZJetsToNuNu_HT-600ToInf
-python spawnJobs.py -s ZZTo2L2Q
-python spawnJobs.py -s ZZZ
-python spawnJobs.py -s ttHJetTobb
-python spawnJobs.py -s SMS-T5Wg_mGl-1550_mNLSP-0to1500
+#python spawnJobs.py -s Run2015C_25ns-05Oct2015-v1.DoubleEG -e $executable
+#python spawnJobs.py -s Run2015C_25ns-05Oct2015-v1.HTMHT -e $executable 
+#python spawnJobs.py -s Run2015C_25ns-05Oct2015-v1.JetHT  -e $executable 
+#python spawnJobs.py -s Run2015C_25ns-05Oct2015-v1.MET -e $executable 
+#python spawnJobs.py -s Run2015C_25ns-05Oct2015-v1.SingleElectron  -e $executable 
+#python spawnJobs.py -s Run2015C_25ns-05Oct2015-v1.SingleMuon -e $executable 
+#python spawnJobs.py -s Run2015C_25ns-05Oct2015-v1.SinglePhoton -e $executable 
+#python spawnJobs.py -s Run2015D-05Oct2015-v1.DoubleEG -e $executable 
+#python spawnJobs.py -s Run2015D-05Oct2015-v1.DoubleMuon -e $executable 
+#python spawnJobs.py -s Run2015D-05Oct2015-v1.HTMHT -e $executable 
+#python spawnJobs.py -s Run2015D-05Oct2015-v1.JetHT -e $executable 
+#python spawnJobs.py -s Run2015D-05Oct2015-v1.MET -e $executable 
+#python spawnJobs.py -s Run2015D-05Oct2015-v1.SingleElectron -e $executable 
+#python spawnJobs.py -s Run2015D-05Oct2015-v1.SingleMuon -e $executable 
+#python spawnJobs.py -s Run2015D-05Oct2015-v1.SinglePhoton -e $executable 
+#python spawnJobs.py -s Run2015D-PromptReco-v4.DoubleEG -e $executable 
+#python spawnJobs.py -s Run2015D-PromptReco-v4.DoubleMuon -e $executable 
+#python spawnJobs.py -s Run2015D-PromptReco-v4.HTMHT -e $executable
+#python spawnJobs.py -s Run2015D-PromptReco-v4.JetHT -e $executable 
+#python spawnJobs.py -s Run2015D-PromptReco-v4.MET -e $executable 
+#python spawnJobs.py -s Run2015D-PromptReco-v4.SingleElectron -e $executable 
+#python spawnJobs.py -s Run2015D-PromptReco-v4.SingleMuon -e $executable
+#python spawnJobs.py -s Run2015D-PromptReco-v4.SinglePhoton -e $executable 
+
+python spawnJobs.py -s DYJetsToLL_M-50_HT-100to200  -e $executable 
+python spawnJobs.py -s DYJetsToLL_M-50_HT-200to400  -e $executable 
+python spawnJobs.py -s DYJetsToLL_M-50_HT-400to600  -e $executable 
+python spawnJobs.py -s DYJetsToLL_M-50_HT-600toInf  -e $executable 
+python spawnJobs.py -s DYJetsToLL_M-50_TuneCUETP8M1  -e $executable 
+python spawnJobs.py -s GJets_HT-100To200  -e $executable 
+python spawnJobs.py -s GJets_HT-200To400  -e $executable 
+python spawnJobs.py -s GJets_HT-400To600  -e $executable 
+python spawnJobs.py -s GJets_HT-600ToInf  -e $executable 
+python spawnJobs.py -s QCD_HT1000to1500  -e $executable 
+python spawnJobs.py -s QCD_HT1500to2000  -e $executable 
+python spawnJobs.py -s QCD_HT2000toInf  -e $executable 
+python spawnJobs.py -s QCD_HT200to300  -e $executable 
+python spawnJobs.py -s QCD_HT300to500  -e $executable 
+python spawnJobs.py -s QCD_HT500to700  -e $executable 
+python spawnJobs.py -s QCD_HT700to1000  -e $executable 
+python spawnJobs.py -s ST_s-channel_4f_leptonDecays  -e $executable 
+python spawnJobs.py -s ST_t-channel_antitop_4f_leptonDecays  -e $executable 
+python spawnJobs.py -s ST_t-channel_top_4f_leptonDecays  -e $executable 
+python spawnJobs.py -s ST_tW_antitop_5f_inclusiveDecays  -e $executable 
+python spawnJobs.py -s ST_tW_top_5f_inclusiveDecays  -e $executable 
+python spawnJobs.py -s TTJets_DiLept  -e $executable 
+python spawnJobs.py -s TTJets_HT-1200to2500  -e $executable 
+python spawnJobs.py -s TTJets_HT-2500toInf  -e $executable 
+python spawnJobs.py -s TTJets_HT-600to800  -e $executable 
+python spawnJobs.py -s TTJets_HT-800to1200  -e $executable 
+python spawnJobs.py -s TTJets_SingleLeptFromT  -e $executable 
+python spawnJobs.py -s TTJets_SingleLeptFromTbar  -e $executable 
+python spawnJobs.py -s TTJets_TuneCUETP8M1  -e $executable 
+python spawnJobs.py -s TTTT_TuneCUETP8M1  -e $executable 
+python spawnJobs.py -s TTWJetsToLNu  -e $executable 
+python spawnJobs.py -s TTWJetsToQQ  -e $executable 
+python spawnJobs.py -s TTZToLLNuNu  -e $executable 
+python spawnJobs.py -s TTZToQQ  -e $executable 
+python spawnJobs.py -s WH_HToBB  -e $executable 
+python spawnJobs.py -s WJetsToLNu_HT-100To200  -e $executable 
+python spawnJobs.py -s WJetsToLNu_HT-1200To2500  -e $executable 
+python spawnJobs.py -s WJetsToLNu_HT-200To400  -e $executable 
+python spawnJobs.py -s WJetsToLNu_HT-2500ToInf  -e $executable 
+python spawnJobs.py -s WJetsToLNu_HT-400To600  -e $executable 
+python spawnJobs.py -s WJetsToLNu_HT-600To800  -e $executable 
+python spawnJobs.py -s WJetsToLNu_HT-800To1200  -e $executable 
+python spawnJobs.py -s WWTo1L1Nu2Q  -e $executable 
+python spawnJobs.py -s WWTo2L2Nu  -e $executable
+python spawnJobs.py -s WWZ  -e $executable 
+python spawnJobs.py -s WZTo1L1Nu2Q  -e $executable 
+python spawnJobs.py -s WZTo1L3Nu  -e $executable 
+python spawnJobs.py -s WZZ  -e $executable 
+python spawnJobs.py -s ZH_HToBB_ZToNuNu  -e $executable 
+python spawnJobs.py -s ZJetsToNuNu_HT-100To200  -e $executable 
+python spawnJobs.py -s ZJetsToNuNu_HT-200To400  -e $executable 
+python spawnJobs.py -s ZJetsToNuNu_HT-400To600  -e $executable 
+python spawnJobs.py -s ZJetsToNuNu_HT-600ToInf  -e $executable 
+python spawnJobs.py -s ZZTo2L2Q  -e $executable 
+python spawnJobs.py -s ZZZ  -e $executable 
+python spawnJobs.py -s ttHJetTobb  -e $executable 
+python spawnJobs.py -s SMS-T5Wg_mGl-1550_mNLSP-0to1500   -e $executable 

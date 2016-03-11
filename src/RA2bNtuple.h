@@ -1204,13 +1204,16 @@ void RA2bNtuple::patchJetID(){
   JetID = true ; 
   
   vector<TLorentzVector> jets = *slimJet;
-  TLorentzVector mht(0.,0.,0.,0.);
+  vector<TLorentzVector> htJets;
 
+  TLorentzVector mht(0.,0.,0.,0.);
+  
   for( unsigned int i = 0 ; i < jets.size() ; i++ ){
     if( jets[i].Pt()>30. ){
       if( fabs(jets[i].Eta())<2.4 ){
 	HT+=jets[i].Pt();
 	NJets++;
+	htJets.push_back(jets[i]);
       }
       if( fabs(jets[i].Eta())<5.0){
 	mht += TLorentzVector(jets[i].Px(),jets[i].Py(),0.,0.) ;
@@ -1225,6 +1228,11 @@ void RA2bNtuple::patchJetID(){
   
   MHT = mht.Pt();
   MHT_Phi = mht.Phi();
+  
+  DeltaPhi1 = htJets.size()>=1&&htJets[0].Pt()>30.&&fabs(htJets[0].Eta())<2.4 ? fabs(mht.DeltaPhi( htJets[0] )) : 10. ;
+  DeltaPhi2 = htJets.size()>=2&&htJets[1].Pt()>30.&&fabs(htJets[1].Eta())<2.4 ? fabs(mht.DeltaPhi( htJets[1] )) : 10. ;
+  DeltaPhi3 = htJets.size()>=3&&htJets[2].Pt()>30.&&fabs(htJets[2].Eta())<2.4 ? fabs(mht.DeltaPhi( htJets[2] )) : 10. ;
+  DeltaPhi4 = htJets.size()>=4&&htJets[3].Pt()>30.&&fabs(htJets[3].Eta())<2.4 ? fabs(mht.DeltaPhi( htJets[3] )) : 10. ;
 
 }
 

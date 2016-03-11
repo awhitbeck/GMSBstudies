@@ -34,7 +34,7 @@ int main(int argc, char** argv){
   analyzer<RA2bNtuple> a(ntuple);
   weightProducer<RA2bNtuple> *wp = new weightProducer<RA2bNtuple>(ntuple,"Weight");
 
-  for( int i = 0 ; i < t->GetEntries() ; i++ ){
+  for( int i = 0 ; i < 1000 /*t->GetEntries()*/ ; i++ ){
 
     t->GetEntry(i);
 

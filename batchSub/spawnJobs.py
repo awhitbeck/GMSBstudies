@@ -23,8 +23,11 @@ os.system("cd ../../AnalysisTools ; rm AnalysisTools.tar ; git archive master -o
 
 commitHash = subprocess.check_output("cd ../ ; git rev-parse HEAD",shell=True)
 
-os.system("eos root://cmseos.fnal.gov mkdir /eos/uscms/store/user/awhitbe1/GMSBstudies/{0}".format(options.executable))
-os.system("eos root://cmseos.fnal.gov mkdir /eos/uscms/store/user/awhitbe1/GMSBstudies/{0}/{1}".format(options.executable,commitHash))
+#os.system('eos root://cmseos.fnal.gov mkdir /eos/uscms/store/user/awhitbe1/GMSBstudies/{0}'.format(options.executable))
+#os.system("test=`eos root://cmseos.fnal.gov ls /eos/uscms/store/user/awhitbe1/GMSBstudies/{0} | grep 'No such file or directory'` ; if [ $test == '' ] ; then ;  eos root://cmseos.fnal.gov mkdir /eos/uscms/store/user/awhitbe1/GMSBstudies/{0} ; fi".format(options.executable))
+
+#os.system('eos root://cmseos.fnal.gov mkdir /eos/uscms/store/user/awhitbe1/GMSBstudies/{0}/{1}'.format(options.executable,commitHash))
+#os.system("test=`eos root://cmseos.fnal.gov ls /eos/uscms/store/user/awhitbe1/GMSBstudies/{0}/{1} | grep 'No such file or directory'` ; if [ $test == '' ] ; then ; eos root://cmseos.fnal.gov mkdir /eos/uscms/store/user/awhitbe1/GMSBstudies/{0}/{1} ; fi".format(options.executable,commitHash))
 
 jdlFile = """universe = vanilla
 Executable = worker.sh
@@ -34,7 +37,7 @@ request_memory = 10000
 Should_Transfer_Files = YES
 WhenToTransferOutput = ON_EXIT_OR_EVICT
 Transfer_Input_Files = ../GMSBstudies.tar, ../../AnalysisTools/AnalysisTools.tar
-PeriodicRemove = ( JobStatus == 2 ) && ( ( CurrentTime - EnteredCurrentStatus ) > 200000 )
+PeriodicRemove = ( JobStatus == 2 ) && ( ( CurrentTime - EnteredCurrentStatus ) > 600 )
 Output = {0}_{1}.stdout
 Error = {0}_{1}.stderr
 Log = {0}_{1}.condor
@@ -48,5 +51,6 @@ outputFile = open("{0}_{1}.jdl".format(options.executable,options.name),'w')
 outputFile.write(jdlFile)
 outputFile.close()
 
-os.system("condor_submit {0}_{1}.jdl".format(options.executable,options.name))
+##### DAGMAN will be use to manage jobs
+#os.system("condor_submit {0}_{1}.jdl".format(options.executable,options.name))
 

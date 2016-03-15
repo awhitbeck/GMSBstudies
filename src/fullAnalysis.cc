@@ -21,16 +21,25 @@ using namespace std;
 
 int main(int argc, char** argv){
 
-  TString sample = argv[1];
-  TChain* t = buildChain("inputFiles.txt",sample,"TreeMaker2/PreSelection");
+
+  // this code is setup specifically for analyzing one input file at a time.  The output histonames
+  // are based on the sample key, from the fmap (see helper.h for details)
+  TString fileTag = argv[1];
+  fileMap fmap = parseInputs("inputFiles.txt");
+  sampleMap rmap = reduceMap(fmap,fileTag);
+  if( rmap.size() != 1 ){
+    cout << "either no samples found or too many samples found..." << endl;
+    return 1;
+  }
+  TChain* t = buildChain(rmap.begin()->second,"TreeMaker2/PreSelection");
   
   RA2bNtuple *ntuple = new RA2bNtuple(t);
 
   selectBaseline<RA2bNtuple> *selectBase = new selectBaseline<RA2bNtuple>(ntuple);
-  fillHisto<RA2bNtuple> *SR_HThisto    = new fillHisto<RA2bNtuple>(ntuple,40,500,4000,sample+"_SR_HT","HT","Weight");
-  fillHisto<RA2bNtuple> *SR_MHThisto   = new fillHisto<RA2bNtuple>(ntuple,40,0,2000,sample+"_SR_MHT","MHT","Weight");
-  fillHisto<RA2bNtuple> *SR_NJetshisto = new fillHisto<RA2bNtuple>(ntuple,12,3.5,15.5,sample+"_SR_NJets","NJets","Weight");
-  fillHisto<RA2bNtuple> *SR_BTagshisto = new fillHisto<RA2bNtuple>(ntuple,20,500,1500,sample+"_SR_BTags","BTags","Weight");
+  fillHisto<RA2bNtuple> *SR_HThisto    = new fillHisto<RA2bNtuple>(ntuple,40,500,4000,rmap.begin()->first+"_SR_HT","HT","Weight");
+  fillHisto<RA2bNtuple> *SR_MHThisto   = new fillHisto<RA2bNtuple>(ntuple,40,0,2000,rmap.begin()->first+"_SR_MHT","MHT","Weight");
+  fillHisto<RA2bNtuple> *SR_NJetshisto = new fillHisto<RA2bNtuple>(ntuple,12,3.5,15.5,rmap.begin()->first+"_SR_NJets","NJets","Weight");
+  fillHisto<RA2bNtuple> *SR_BTagshisto = new fillHisto<RA2bNtuple>(ntuple,20,500,1500,rmap.begin()->first+"_SR_BTags","BTags","Weight");
   analyzer<RA2bNtuple> SR(ntuple,5);
   SR.addProcessor(selectBase);
   SR.addProcessor(SR_HThisto);
@@ -42,13 +51,13 @@ int main(int argc, char** argv){
 
   selectLowDphiCR<RA2bNtuple> *selectLdP = new selectLowDphiCR<RA2bNtuple>(ntuple);
   fillHisto<RA2bNtuple> *ldpCR_HThisto = new fillHisto<RA2bNtuple>(*SR_HThisto) ; 
-  ldpCR_HThisto->histo->SetNameTitle(sample + "_ldpCR_HT",sample + "_ldpCR_HT");		
+  ldpCR_HThisto->histo->SetNameTitle(rmap.begin()->first + "_ldpCR_HT",rmap.begin()->first + "_ldpCR_HT");		
   fillHisto<RA2bNtuple> *ldpCR_MHThisto = new fillHisto<RA2bNtuple>(*SR_MHThisto)   ; 
-  ldpCR_MHThisto->histo->SetNameTitle(sample + "_ldpCR_MHT",sample + "_ldpCR_MHT");
+  ldpCR_MHThisto->histo->SetNameTitle(rmap.begin()->first + "_ldpCR_MHT",rmap.begin()->first + "_ldpCR_MHT");
   fillHisto<RA2bNtuple> *ldpCR_NJetshisto = new fillHisto<RA2bNtuple>(*SR_NJetshisto) ;
-  ldpCR_NJetshisto->histo->SetNameTitle(sample + "_ldpCR_NJets",sample + "_ldpCR_NJets");
+  ldpCR_NJetshisto->histo->SetNameTitle(rmap.begin()->first + "_ldpCR_NJets",rmap.begin()->first + "_ldpCR_NJets");
   fillHisto<RA2bNtuple> *ldpCR_BTagshisto = new fillHisto<RA2bNtuple>(*SR_BTagshisto) ; 
-  ldpCR_BTagshisto->histo->SetNameTitle(sample + "_ldpCR_BTags",sample + "_ldpCR_BTags");
+  ldpCR_BTagshisto->histo->SetNameTitle(rmap.begin()->first + "_ldpCR_BTags",rmap.begin()->first + "_ldpCR_BTags");
   analyzer<RA2bNtuple> ldpCR(ntuple,5);
   ldpCR.addProcessor(selectBase);
   ldpCR.addProcessor(ldpCR_HThisto);
@@ -60,13 +69,13 @@ int main(int argc, char** argv){
 
   selectLeptonCR<RA2bNtuple> *select1L = new selectLeptonCR<RA2bNtuple>(ntuple);
   fillHisto<RA2bNtuple> *lepCR_HThisto = new fillHisto<RA2bNtuple>(*SR_HThisto) ;
-  lepCR_HThisto->histo->SetNameTitle(sample + "_lepCR_HT",sample + "_lepCR_HT");		
+  lepCR_HThisto->histo->SetNameTitle(rmap.begin()->first + "_lepCR_HT",rmap.begin()->first + "_lepCR_HT");		
   fillHisto<RA2bNtuple> *lepCR_MHThisto = new fillHisto<RA2bNtuple>(*SR_MHThisto) ; 
-  lepCR_MHThisto->histo->SetNameTitle(sample + "_lepCR_MHT",sample + "_lepCR_MHT");		
+  lepCR_MHThisto->histo->SetNameTitle(rmap.begin()->first + "_lepCR_MHT",rmap.begin()->first + "_lepCR_MHT");		
   fillHisto<RA2bNtuple> *lepCR_NJetshisto = new fillHisto<RA2bNtuple>(*SR_NJetshisto) ; 
-  lepCR_NJetshisto->histo->SetNameTitle(sample + "_lepCR_NJets",sample + "_lepCR_NJets");
+  lepCR_NJetshisto->histo->SetNameTitle(rmap.begin()->first + "_lepCR_NJets",rmap.begin()->first + "_lepCR_NJets");
   fillHisto<RA2bNtuple> *lepCR_BTagshisto = new fillHisto<RA2bNtuple>(*SR_BTagshisto) ; 
-  lepCR_BTagshisto->histo->SetNameTitle(sample + "_lepCR_BTags",sample + "_lepCR_BTags");
+  lepCR_BTagshisto->histo->SetNameTitle(rmap.begin()->first + "_lepCR_BTags",rmap.begin()->first + "_lepCR_BTags");
   analyzer<RA2bNtuple> lepCR(ntuple,5);
   lepCR.addProcessor(selectBase);
   lepCR.addProcessor(lepCR_HThisto);
@@ -96,22 +105,22 @@ int main(int argc, char** argv){
 
   cout << "save tree" << endl;
 
-  TFile* outFile = new TFile("fullAnalysis_"+sample+".root","UPDATE");
-  selectBase->histo->Write("baselineYields_"+sample);
-  selectLdP->histo->Write("lowDphiYields_"+sample);
-  select1L->histo->Write("singleLepYields_"+sample);
-  SR_HThisto->histo->Write();      
-  SR_MHThisto->histo->Write();  	  
-  SR_NJetshisto->histo->Write();	  
-  SR_BTagshisto->histo->Write();	  
-  ldpCR_HThisto->histo->Write();   
-  ldpCR_MHThisto->histo->Write();  
-  ldpCR_NJetshisto->histo->Write();
-  ldpCR_BTagshisto->histo->Write();
-  lepCR_HThisto->histo->Write();	  
-  lepCR_MHThisto->histo->Write();  
-  lepCR_NJetshisto->histo->Write();
-  lepCR_BTagshisto->histo->Write();
+  TFile* outFile = new TFile("fullAnalysis_"+fileTag+".root","UPDATE");
+  selectBase->histo->Write("baselineYields_"+rmap.begin()->first);
+  selectLdP->histo->Write("lowDphiYields_"+rmap.begin()->first);
+  select1L->histo->Write("singleLepYields_"+rmap.begin()->first);
+  SR_HThisto->histo->Write(rmap.begin()->first+"_SR_HT");      
+  SR_MHThisto->histo->Write(rmap.begin()->first+"_SR_MHT");  	  
+  SR_NJetshisto->histo->Write(rmap.begin()->first+"_SR_NJets");	  
+  SR_BTagshisto->histo->Write(rmap.begin()->first+"_SR_BTags");	  
+  ldpCR_HThisto->histo->Write(rmap.begin()->first+"_ldpCR_HT");   
+  ldpCR_MHThisto->histo->Write(rmap.begin()->first+"_ldpCR_MHT");  
+  ldpCR_NJetshisto->histo->Write(rmap.begin()->first+"_ldpCR_NJets");
+  ldpCR_BTagshisto->histo->Write(rmap.begin()->first+"_ldpCR_BTags");
+  lepCR_HThisto->histo->Write(rmap.begin()->first+"_lepCR_HT");	  
+  lepCR_MHThisto->histo->Write(rmap.begin()->first+"_lepCR_MHT");  
+  lepCR_NJetshisto->histo->Write(rmap.begin()->first+"_lepCR_NJets");
+  lepCR_BTagshisto->histo->Write(rmap.begin()->first+"_lepCR_BTags");
 
   outFile->Close();
 

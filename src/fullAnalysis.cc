@@ -3,9 +3,11 @@
 #include "selectBaseline.cc"
 #include "selectLowDphiCR.cc"
 #include "selectLeptonCR.cc"
+#include "selectPrompt.cc"
 #include "skim.cc"
 #include "weightProducer.cc"
 #include "fillHisto.cc"
+#include "fillDphiGamma.cc"
 
 #include "TString.h"
 #include "TChain.h"
@@ -34,111 +36,110 @@ int main(int argc, char** argv){
   TChain* t = buildChain(rmap.begin()->second,"TreeMaker2/PreSelection");
   
   RA2bNtuple *ntuple = new RA2bNtuple(t);
+  
+  selectPrompt<RA2bNtuple> prompt(ntuple,false); // selecton prompt photons
+  if( rmap.begin()->first == "QCD" )
+    prompt.negate = true ; // selects non-prompt photons
 
+  // setup selectors and fillers for the signal region
   selectBaseline<RA2bNtuple> *selectBase = new selectBaseline<RA2bNtuple>(ntuple);
-  fillHisto<RA2bNtuple> *SR_HThisto    = new fillHisto<RA2bNtuple>(ntuple,40,500,4000,rmap.begin()->first+"_SR_HT","HT","Weight");
-  fillHisto<RA2bNtuple> *SR_MHThisto   = new fillHisto<RA2bNtuple>(ntuple,40,0,2000,rmap.begin()->first+"_SR_MHT","MHT","Weight");
-  fillHisto<RA2bNtuple> *SR_NJetshisto = new fillHisto<RA2bNtuple>(ntuple,12,3.5,15.5,rmap.begin()->first+"_SR_NJets","NJets","Weight");
-  fillHisto<RA2bNtuple> *SR_BTagshisto = new fillHisto<RA2bNtuple>(ntuple,20,500,1500,rmap.begin()->first+"_SR_BTags","BTags","Weight");
+  fillHisto<RA2bNtuple> SR_HThisto(ntuple,40,500,4000,"SR_"+rmap.begin()->first,"HT","Weight");
+  fillHisto<RA2bNtuple> SR_MHThisto(ntuple,40,0,2000,"SR_"+rmap.begin()->first,"MHT","Weight");
+  fillHisto<RA2bNtuple> SR_NJetshisto(ntuple,12,3.5,15.5,"SR_"+rmap.begin()->first,"NJets","Weight");
+  fillHisto<RA2bNtuple> SR_BTagshisto(ntuple,7,-0.5,6.5,"SR_"+rmap.begin()->first,"BTags","Weight");
   analyzer<RA2bNtuple> SR(ntuple,5);
   SR.addProcessor(selectBase);
-  SR.addProcessor(SR_HThisto);
-  SR.addProcessor(SR_MHThisto);
-  SR.addProcessor(SR_NJetshisto);
-  SR.addProcessor(SR_BTagshisto);
+  // make sure that for QCD or GJets samples, either non-prompt or
+  // prompt photons, respectively are used
+  if( rmap.begin()->first == "QCD" || rmap.begin()->first == "GJets" )
+    SR.addProcessor(&prompt);
+  SR.addProcessor(&SR_HThisto);
+  SR.addProcessor(&SR_MHThisto);
+  SR.addProcessor(&SR_NJetshisto);
+  SR.addProcessor(&SR_BTagshisto);
 
-  cout << "done with SR" << endl;
-
+  // setup selectors and fillers for the low deltaPhi control region
   selectLowDphiCR<RA2bNtuple> *selectLdP = new selectLowDphiCR<RA2bNtuple>(ntuple);
-  fillHisto<RA2bNtuple> *ldpCR_HThisto = new fillHisto<RA2bNtuple>(*SR_HThisto) ; 
-  ldpCR_HThisto->histo->SetNameTitle(rmap.begin()->first + "_ldpCR_HT",rmap.begin()->first + "_ldpCR_HT");		
-  fillHisto<RA2bNtuple> *ldpCR_MHThisto = new fillHisto<RA2bNtuple>(*SR_MHThisto)   ; 
-  ldpCR_MHThisto->histo->SetNameTitle(rmap.begin()->first + "_ldpCR_MHT",rmap.begin()->first + "_ldpCR_MHT");
-  fillHisto<RA2bNtuple> *ldpCR_NJetshisto = new fillHisto<RA2bNtuple>(*SR_NJetshisto) ;
-  ldpCR_NJetshisto->histo->SetNameTitle(rmap.begin()->first + "_ldpCR_NJets",rmap.begin()->first + "_ldpCR_NJets");
-  fillHisto<RA2bNtuple> *ldpCR_BTagshisto = new fillHisto<RA2bNtuple>(*SR_BTagshisto) ; 
-  ldpCR_BTagshisto->histo->SetNameTitle(rmap.begin()->first + "_ldpCR_BTags",rmap.begin()->first + "_ldpCR_BTags");
-  analyzer<RA2bNtuple> ldpCR(ntuple,5);
-  ldpCR.addProcessor(selectBase);
-  ldpCR.addProcessor(ldpCR_HThisto);
-  ldpCR.addProcessor(ldpCR_MHThisto);
-  ldpCR.addProcessor(ldpCR_NJetshisto);
-  ldpCR.addProcessor(ldpCR_BTagshisto);
+  fillHisto<RA2bNtuple> ldpCR_HThisto = fillHisto<RA2bNtuple>(SR_HThisto,"HT_ldpHT_"+rmap.begin()->first) ; 
+  fillHisto<RA2bNtuple> ldpCR_MHThisto = fillHisto<RA2bNtuple>(SR_MHThisto,"MHT_ldpHT_"+rmap.begin()->first)   ; 
+  fillHisto<RA2bNtuple> ldpCR_NJetshisto = fillHisto<RA2bNtuple>(SR_NJetshisto,"NJets_ldpHT_"+rmap.begin()->first) ;
+  fillHisto<RA2bNtuple> ldpCR_BTagshisto = fillHisto<RA2bNtuple>(SR_BTagshisto,"BTags_ldpCR_"+rmap.begin()->first) ; 
+  fillDphiGamma<RA2bNtuple> ldpCR_dPhiGamma(ntuple,"ldpCR");
+  analyzer<RA2bNtuple> ldpCR(ntuple,6);
+  ldpCR.addProcessor(selectLdP);
+  // make sure that for QCD or GJets samples, either non-prompt or
+  // prompt photons, respectively are used
+  if( rmap.begin()->first == "QCD" || rmap.begin()->first == "GJets" )
+    ldpCR.addProcessor(&prompt);
+  ldpCR.addProcessor(&ldpCR_HThisto);
+  ldpCR.addProcessor(&ldpCR_MHThisto);
+  ldpCR.addProcessor(&ldpCR_NJetshisto);
+  ldpCR.addProcessor(&ldpCR_BTagshisto);
+  ldpCR.addProcessor(&ldpCR_dPhiGamma);
 
-  cout << "done with ldpCR" << endl;
-
+  // setup selectors and fillers for the single lepton control region
   selectLeptonCR<RA2bNtuple> *select1L = new selectLeptonCR<RA2bNtuple>(ntuple);
-  fillHisto<RA2bNtuple> *lepCR_HThisto = new fillHisto<RA2bNtuple>(*SR_HThisto) ;
-  lepCR_HThisto->histo->SetNameTitle(rmap.begin()->first + "_lepCR_HT",rmap.begin()->first + "_lepCR_HT");		
-  fillHisto<RA2bNtuple> *lepCR_MHThisto = new fillHisto<RA2bNtuple>(*SR_MHThisto) ; 
-  lepCR_MHThisto->histo->SetNameTitle(rmap.begin()->first + "_lepCR_MHT",rmap.begin()->first + "_lepCR_MHT");		
-  fillHisto<RA2bNtuple> *lepCR_NJetshisto = new fillHisto<RA2bNtuple>(*SR_NJetshisto) ; 
-  lepCR_NJetshisto->histo->SetNameTitle(rmap.begin()->first + "_lepCR_NJets",rmap.begin()->first + "_lepCR_NJets");
-  fillHisto<RA2bNtuple> *lepCR_BTagshisto = new fillHisto<RA2bNtuple>(*SR_BTagshisto) ; 
-  lepCR_BTagshisto->histo->SetNameTitle(rmap.begin()->first + "_lepCR_BTags",rmap.begin()->first + "_lepCR_BTags");
+  fillHisto<RA2bNtuple> lepCR_HThisto = fillHisto<RA2bNtuple>(SR_HThisto,"HT_lepCR_"+rmap.begin()->first) ;
+  fillHisto<RA2bNtuple> lepCR_MHThisto = fillHisto<RA2bNtuple>(SR_MHThisto,"MHT_lepCR_"+rmap.begin()->first) ; 
+  fillHisto<RA2bNtuple> lepCR_NJetshisto = fillHisto<RA2bNtuple>(SR_NJetshisto,"NJets_lepCR_"+rmap.begin()->first) ; 
+  fillHisto<RA2bNtuple> lepCR_BTagshisto = fillHisto<RA2bNtuple>(SR_BTagshisto,"BTags_lepCR_"+rmap.begin()->first) ; 
   analyzer<RA2bNtuple> lepCR(ntuple,5);
-  lepCR.addProcessor(selectBase);
-  lepCR.addProcessor(lepCR_HThisto);
-  lepCR.addProcessor(lepCR_MHThisto);
-  lepCR.addProcessor(lepCR_NJetshisto);
-  lepCR.addProcessor(lepCR_BTagshisto);
-
-  cout << "done with lepCR" << endl;
+  lepCR.addProcessor(select1L);
+  // make sure that for QCD or GJets samples, either non-prompt or
+  // prompt photons, respectively are used
+  if( rmap.begin()->first == "QCD" || rmap.begin()->first == "GJets" )
+    lepCR.addProcessor(&prompt);
+  lepCR.addProcessor(&lepCR_HThisto);
+  lepCR.addProcessor(&lepCR_MHThisto);
+  lepCR.addProcessor(&lepCR_NJetshisto);
+  lepCR.addProcessor(&lepCR_BTagshisto);
 
   for( int i = 0 ; i < t->GetEntries() ; i++ ){
 
     t->GetEntry(i);
-    //cout << "event: " << i << endl;
+    if( i % 1000 == 0 ) 
+      cout << "event: " << i << endl;
+    ntuple->patchJetID();
+
     for( unsigned int iProc = 0 ; iProc < SR.processorList->size() ; iProc++){
       //cout << "SR proc: " << iProc << endl;
-      if( ! SR.processorList->at(iProc) ) break;
+      if( ! SR.processorList->at(iProc)->process() ) break;
     }
     for( unsigned int iProc = 0 ; iProc < ldpCR.processorList->size() ; iProc++){
       //cout << "ldpCR proc: " << iProc << endl;
-      if( ! ldpCR.processorList->at(iProc) ) break;
+      if( ! ldpCR.processorList->at(iProc)->process() ) break;
     }
     for( unsigned int iProc = 0 ; iProc < lepCR.processorList->size() ; iProc++){
       //cout << "lepCR proc: " << iProc << endl;
-      if( ! lepCR.processorList->at(iProc) ) break;
+      if( ! lepCR.processorList->at(iProc)->process() ) break;
     }
   }
 
   cout << "save tree" << endl;
 
-  TFile* outFile = new TFile("fullAnalysis_"+fileTag+".root","UPDATE");
+  TFile* outFile = new TFile("fullAnalysis_"+fileTag+".root","RECREATE");
   selectBase->histo->Write("baselineYields_"+rmap.begin()->first);
   selectLdP->histo->Write("lowDphiYields_"+rmap.begin()->first);
   select1L->histo->Write("singleLepYields_"+rmap.begin()->first);
-  SR_HThisto->histo->Write(rmap.begin()->first+"_SR_HT");      
-  SR_MHThisto->histo->Write(rmap.begin()->first+"_SR_MHT");  	  
-  SR_NJetshisto->histo->Write(rmap.begin()->first+"_SR_NJets");	  
-  SR_BTagshisto->histo->Write(rmap.begin()->first+"_SR_BTags");	  
-  ldpCR_HThisto->histo->Write(rmap.begin()->first+"_ldpCR_HT");   
-  ldpCR_MHThisto->histo->Write(rmap.begin()->first+"_ldpCR_MHT");  
-  ldpCR_NJetshisto->histo->Write(rmap.begin()->first+"_ldpCR_NJets");
-  ldpCR_BTagshisto->histo->Write(rmap.begin()->first+"_ldpCR_BTags");
-  lepCR_HThisto->histo->Write(rmap.begin()->first+"_lepCR_HT");	  
-  lepCR_MHThisto->histo->Write(rmap.begin()->first+"_lepCR_MHT");  
-  lepCR_NJetshisto->histo->Write(rmap.begin()->first+"_lepCR_NJets");
-  lepCR_BTagshisto->histo->Write(rmap.begin()->first+"_lepCR_BTags");
+  SR_HThisto.histo->Write();
+  SR_MHThisto.histo->Write();
+  SR_NJetshisto.histo->Write();
+  SR_BTagshisto.histo->Write();
+  ldpCR_HThisto.histo->Write();
+  ldpCR_MHThisto.histo->Write();
+  ldpCR_NJetshisto.histo->Write();
+  ldpCR_BTagshisto.histo->Write();
+  ldpCR_dPhiGamma.histo->Write();
+  lepCR_HThisto.histo->Write();
+  lepCR_MHThisto.histo->Write();
+  lepCR_NJetshisto.histo->Write();
+  lepCR_BTagshisto.histo->Write();
 
   outFile->Close();
 
   delete ntuple;
   delete selectLdP;
   delete select1L;
-  delete SR_HThisto;      
-  delete SR_MHThisto;  	  
-  delete SR_NJetshisto;	  
-  delete SR_BTagshisto;	  
-  delete ldpCR_HThisto;   
-  delete ldpCR_MHThisto;  
-  delete ldpCR_NJetshisto;
-  delete ldpCR_BTagshisto;
-  delete lepCR_HThisto;	  
-  delete lepCR_MHThisto;  
-  delete lepCR_NJetshisto;
-  delete lepCR_BTagshisto;
 
 }  
 

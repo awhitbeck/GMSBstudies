@@ -23,12 +23,12 @@ public :
     : processor<TreeType>("selectLowDphiCR")
   {
     ntuple = ntuple_;
-    histo = new TH1F("lowDphiCRYields","lowDphiCRYields",9,0.5,9.5);
+    histo = new TH1F("lowDphiCRYields","lowDphiCRYields",6,0.5,6.5);
   };
 
   bool process( ) override {
-
-    ntuple->patchJetID();
+    // I am assuming that this has already been done!!
+    //ntuple->patchJetID();
 
     histo->Fill(0);
     if( ntuple->Leptons == 0 ) histo->Fill(1);

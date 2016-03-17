@@ -28,7 +28,20 @@ public :
 
   bool process( ) override {
 
-    ntuple->patchJetID();
+    // I am assuming that this was done already!!!
+    //ntuple->patchJetID();
+
+    /*
+    std::cout << "Leptons: " << ntuple->Leptons << endl;
+    std::cout << "NumPhotons: " << ntuple->NumPhotons << endl;
+    std::cout << "NJets: " << ntuple->NJets << endl;    
+    std::cout << "HT: " << ntuple->HT << endl;
+    std::cout << "MHT: " << ntuple->MHT << endl;
+    std::cout << "DeltaPhi1: " << ntuple->DeltaPhi1 << endl;
+    std::cout << "DeltaPhi2: " << ntuple->DeltaPhi2 << endl;    
+    std::cout << "DeltaPhi3: " << ntuple->DeltaPhi3 << endl;
+    std::cout << "DeltaPhi4: " << ntuple->DeltaPhi4 << endl;
+    */
 
     histo->Fill(0);
     if( ntuple->Leptons == 1 ) histo->Fill(1);

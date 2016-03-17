@@ -62,6 +62,9 @@ public :
       dPhiGamma -= 2*TMath::Pi() ;
     if( dPhiGamma < -TMath::Pi() )
       dPhiGamma += 2*TMath::Pi() ;
+
+    //cout << "dPhiGamma: " << dPhiGamma << endl;
+
     histo->Fill( fabs( dPhiGamma ) );
 
     return true;

@@ -47,7 +47,7 @@ int main(int argc, char** argv){
   fillHisto<RA2bNtuple> SR_MHThisto(ntuple,40,0,2000,"SR_"+rmap.begin()->first,"MHT","Weight");
   fillHisto<RA2bNtuple> SR_NJetshisto(ntuple,12,3.5,15.5,"SR_"+rmap.begin()->first,"NJets","Weight");
   fillHisto<RA2bNtuple> SR_BTagshisto(ntuple,7,-0.5,6.5,"SR_"+rmap.begin()->first,"BTags","Weight");
-  analyzer<RA2bNtuple> SR(ntuple,5);
+  analyzer<RA2bNtuple> SR(ntuple,0);
   SR.addProcessor(selectBase);
   // make sure that for QCD or GJets samples, either non-prompt or
   // prompt photons, respectively are used
@@ -65,7 +65,7 @@ int main(int argc, char** argv){
   fillHisto<RA2bNtuple> ldpCR_NJetshisto = fillHisto<RA2bNtuple>(SR_NJetshisto,"NJets_ldpHT_"+rmap.begin()->first) ;
   fillHisto<RA2bNtuple> ldpCR_BTagshisto = fillHisto<RA2bNtuple>(SR_BTagshisto,"BTags_ldpCR_"+rmap.begin()->first) ; 
   fillDphiGamma<RA2bNtuple> ldpCR_dPhiGamma(ntuple,"ldpCR");
-  analyzer<RA2bNtuple> ldpCR(ntuple,6);
+  analyzer<RA2bNtuple> ldpCR(ntuple,1);
   ldpCR.addProcessor(selectLdP);
   // make sure that for QCD or GJets samples, either non-prompt or
   // prompt photons, respectively are used
@@ -83,7 +83,7 @@ int main(int argc, char** argv){
   fillHisto<RA2bNtuple> lepCR_MHThisto = fillHisto<RA2bNtuple>(SR_MHThisto,"MHT_lepCR_"+rmap.begin()->first) ; 
   fillHisto<RA2bNtuple> lepCR_NJetshisto = fillHisto<RA2bNtuple>(SR_NJetshisto,"NJets_lepCR_"+rmap.begin()->first) ; 
   fillHisto<RA2bNtuple> lepCR_BTagshisto = fillHisto<RA2bNtuple>(SR_BTagshisto,"BTags_lepCR_"+rmap.begin()->first) ; 
-  analyzer<RA2bNtuple> lepCR(ntuple,5);
+  analyzer<RA2bNtuple> lepCR(ntuple,1);
   lepCR.addProcessor(select1L);
   // make sure that for QCD or GJets samples, either non-prompt or
   // prompt photons, respectively are used
@@ -102,15 +102,15 @@ int main(int argc, char** argv){
     ntuple->patchJetID();
 
     for( unsigned int iProc = 0 ; iProc < SR.processorList->size() ; iProc++){
-      //cout << "SR proc: " << iProc << endl;
+      //cout << "SR proc: " << iProc << endl; // " " << SR.processorList->at(iProc)->moduleName << endl;
       if( ! SR.processorList->at(iProc)->process() ) break;
     }
     for( unsigned int iProc = 0 ; iProc < ldpCR.processorList->size() ; iProc++){
-      //cout << "ldpCR proc: " << iProc << endl;
+      //cout << "ldpCR proc: " << iProc << endl; // " " << ldpCR.processorList->at(iProc)->moduleName << endl;
       if( ! ldpCR.processorList->at(iProc)->process() ) break;
     }
     for( unsigned int iProc = 0 ; iProc < lepCR.processorList->size() ; iProc++){
-      //cout << "lepCR proc: " << iProc << endl;
+      //cout << "lepCR proc: " << iProc << endl; // " " << lepCR.processorList->at(iProc)->moduleName << endl;
       if( ! lepCR.processorList->at(iProc)->process() ) break;
     }
   }

@@ -21,8 +21,21 @@
 
 using namespace std;
 
-int main(int argc, char** argv){
+/*  = = = = = = = = = = = = = = = = = =
 
+    Things to develop:  
+
+    - Need code that will split signals into different histograms 
+      based on their masses 
+    - Need histos that give the fraction of events that have a gen-level
+      electron, muon, photon, di-muon, di-electron, e-mu, tau, di-tau 
+    - Need to understand how often electrons are fakes
+    - Need to understand how often photons are fake electrons
+    
+    = = = = = = = = = = = = = = = = = = */
+
+
+int main(int argc, char** argv){
 
   // this code is setup specifically for analyzing one input file at a time.  The output histonames
   // are based on the sample key, from the fmap (see helper.h for details)
@@ -44,7 +57,7 @@ int main(int argc, char** argv){
   // setup selectors and fillers for the signal region
   selectBaseline<RA2bNtuple> *selectBase = new selectBaseline<RA2bNtuple>(ntuple);
   fillHisto<RA2bNtuple> SR_HThisto(ntuple,40,500,4000,"SR_"+rmap.begin()->first,"HT","Weight");
-  fillHisto<RA2bNtuple> SR_MHThisto(ntuple,40,0,2000,"SR_"+rmap.begin()->first,"MHT","Weight");
+  fillHisto<RA2bNtuple> SR_MHThisto(ntuple,40,0,1000,"SR_"+rmap.begin()->first,"MHT","Weight");
   fillHisto<RA2bNtuple> SR_NJetshisto(ntuple,12,3.5,15.5,"SR_"+rmap.begin()->first,"NJets","Weight");
   fillHisto<RA2bNtuple> SR_BTagshisto(ntuple,7,-0.5,6.5,"SR_"+rmap.begin()->first,"BTags","Weight");
   analyzer<RA2bNtuple> SR(ntuple,0);
@@ -64,7 +77,7 @@ int main(int argc, char** argv){
   fillHisto<RA2bNtuple> ldpCR_MHThisto = fillHisto<RA2bNtuple>(SR_MHThisto,"MHT_ldpHT_"+rmap.begin()->first)   ; 
   fillHisto<RA2bNtuple> ldpCR_NJetshisto = fillHisto<RA2bNtuple>(SR_NJetshisto,"NJets_ldpHT_"+rmap.begin()->first) ;
   fillHisto<RA2bNtuple> ldpCR_BTagshisto = fillHisto<RA2bNtuple>(SR_BTagshisto,"BTags_ldpCR_"+rmap.begin()->first) ; 
-  fillDphiGamma<RA2bNtuple> ldpCR_dPhiGamma(ntuple,"ldpCR");
+  fillDphiGamma<RA2bNtuple> ldpCR_dPhiGamma(ntuple,"dPhiGamma_ldpCR_"+rmap.begin()->first);
   analyzer<RA2bNtuple> ldpCR(ntuple,1);
   ldpCR.addProcessor(selectLdP);
   // make sure that for QCD or GJets samples, either non-prompt or

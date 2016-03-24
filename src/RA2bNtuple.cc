@@ -7,8 +7,8 @@
 void RA2bNtuple::Loop()
 {
 //   In a ROOT session, you can do:
-//      root> .L RA2bNtuple.C
-//      root> RA2bNtuple t
+//      root> .L test.C
+//      root> test t
 //      root> t.GetEntry(12); // Fill t data members with entry number 12
 //      root> t.Show();       // Show values of entry 12
 //      root> t.Show(16);     // Read and show values of entry 16

@@ -38,6 +38,8 @@ int main(int argc, char** argv){
 
     t->GetEntry(i);
 
+    ntuple->patchJetID(); 
+
     if( selectBase->process() )
       skimBase->process();
     if( selectLdP->process() )

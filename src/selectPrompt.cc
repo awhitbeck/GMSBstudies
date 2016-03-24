@@ -28,11 +28,9 @@ public :
     negate = negate_;
     histo = new TH1F("lowDphiCRYields","lowDphiCRYields",1,0.5,1.5);
 
-    ntuple->fChain->SetBranchStatus("photonCands",1);
-    ntuple->fChain->SetBranchStatus("bestPhoton",1);
+    ntuple->fChain->SetBranchStatus("Photons",1);
     ntuple->fChain->SetBranchStatus("photon_nonPrompt",1);
-    if( ntuple->fChain->GetLeaf("photonCands") == NULL ||
-	ntuple->fChain->GetLeaf("bestPhoton") == NULL || 
+    if( ntuple->fChain->GetLeaf("Photons") == NULL ||
 	ntuple->fChain->GetLeaf("photon_nonPrompt") == NULL ){ 
       assert(0);
     }
@@ -47,7 +45,7 @@ public :
     histo->Fill(0);
     
     vector<TLorentzVector> photons, bestPhoton;
-    photons = *(ntuple->photonCands);
+    photons = *(ntuple->Photons);
     bestPhoton = *(ntuple->bestPhoton);
     //cout << "best photon" << endl;
     //cout << "eta: " << bestPhoton[0].Eta() << " phi: " << bestPhoton[0].Phi() << endl;

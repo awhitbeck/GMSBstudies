@@ -36,10 +36,8 @@ public :
 	       histo = new TH1F("dPhiGamma_"+histotag,"dPhiGamma_"+histotag,20,0.,TMath::Pi());
 
 	       ntuple->fChain->SetBranchStatus("MHT_Phi",1);
-	       ntuple->fChain->SetBranchStatus("bestPhoton",1);
 
-	       if( ntuple->fChain->GetLeaf( "MHT_Phi" ) == NULL 
-		   || ntuple->fChain->GetLeaf( "bestPhoton" ) == NULL  )
+	       if( ntuple->fChain->GetLeaf( "MHT_Phi" ) == NULL )
 		 assert(0);	       
 	     };
 

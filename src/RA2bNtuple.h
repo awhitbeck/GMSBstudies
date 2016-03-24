@@ -1037,6 +1037,7 @@ void RA2bNtuple::patchJetID(){
     bool passIsoLoose=false;
     bool passAcc=false;
 
+    /*
     cout << "iPh: " << iPh << endl;
     cout << "Pt:" << Photons->at(iPh).Pt() << endl;
     cout << "isEB: " << photon_isEB->at(iPh) << endl;
@@ -1046,6 +1047,7 @@ void RA2bNtuple::patchJetID(){
     cout << "NeutralIsoRhoCorr: " << photon_pfNeutralIsoRhoCorr->at(iPh) << endl;
     cout << "ChargedIsoRhoCorr: " << photon_pfChargedIsoRhoCorr->at(iPh) << endl;
     cout << "GammaIsoRhoCorr: " << photon_pfGammaIsoRhoCorr->at(iPh) << endl;
+    */
 
     // ---------------------------------- apply id cuts
     if(photon_isEB->at(iPh)){
@@ -1084,7 +1086,7 @@ void RA2bNtuple::patchJetID(){
     }// ---------------------------------- end iso cuts
 
     if( passIDLoose && passIsoLoose && Photons->at(iPh).Pt() > 100.0){//pure photons
-      cout << "EGamma Loose WP photon" << endl;
+      //cout << "EGamma Loose WP photon" << endl;
       if( ! bestPhoton )
 	bestPhoton = new vector<TLorentzVector>();
 
@@ -1093,7 +1095,7 @@ void RA2bNtuple::patchJetID(){
     }
   }
 
-  cout << "done with photons" << endl;
+  //cout << "done with photons" << endl;
     
   vector<TLorentzVector> jets = *slimJet;
   vector<TLorentzVector> htJets;
@@ -1102,8 +1104,8 @@ void RA2bNtuple::patchJetID(){
   
   for( unsigned int i = 0 ; i < jets.size() ; i++ ){
 
-    cout << "jet: " << i << endl;
-    cout << "pt: " << jets[i].Pt() << endl;
+    //cout << "jet: " << i << endl;
+    //cout << "pt: " << jets[i].Pt() << endl;
     
     if( jets[i].Pt()>30. ){
       if( fabs(jets[i].Eta())<2.4 ){

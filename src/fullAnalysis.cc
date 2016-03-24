@@ -110,7 +110,7 @@ int main(int argc, char** argv){
   for( int i = 0 ; i < t->GetEntries() ; i++ ){
 
     t->GetEntry(i);
-    if( i % 1000 == 0 ) 
+    if( i % 10000 == 0 ) 
       cout << "event: " << i << endl;
     ntuple->patchJetID();
 

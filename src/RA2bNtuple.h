@@ -217,6 +217,7 @@ public :
    vector<double>  *photon_sigmaIetaIeta;
    vector<TLorentzVector> *Photons;
    vector<TLorentzVector> *bestPhoton;
+   vector<int> *bestPhotonIndex;
    Double_t        puSysDown;
    Double_t        puSysUp;
    Double_t        puWeight;
@@ -712,6 +713,7 @@ void RA2bNtuple::Init(TTree *tree)
    photon_sigmaIetaIeta = 0;
    Photons = 0;
    bestPhoton = 0;
+   bestPhotonIndex = 0;
    RJetDeltaPhi = 0;
    RJetMinDeltaPhiEta24 = 0;
    RJetMinDeltaPhiEta5 = 0;
@@ -1025,6 +1027,7 @@ void RA2bNtuple::patchJetID(){
   NJets = 0 ;
   JetID = true ; 
   bestPhoton = 0 ;
+  bestPhotonIndex = 0 ;
   NumPhotons = 0 ;
 
   for( unsigned int iPh = 0 ; iPh < Photons->size() ; iPh++ ){
@@ -1087,10 +1090,12 @@ void RA2bNtuple::patchJetID(){
 
     if( passIDLoose && passIsoLoose && Photons->at(iPh).Pt() > 100.0){//pure photons
       //cout << "EGamma Loose WP photon" << endl;
-      if( ! bestPhoton )
+      if( ! bestPhoton ){
 	bestPhoton = new vector<TLorentzVector>();
-
+	bestPhotonIndex = new vector<int>();
+      }
       bestPhoton->push_back(Photons->at(iPh));
+      bestPhotonIndex->push_back(iPh);
       NumPhotons++;
     }
   }

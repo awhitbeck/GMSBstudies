@@ -40,8 +40,8 @@ samples= {"GJets_HT-400To600":"GJets",
           #"ttHJetTobb"
           }
 
-files=open("inputFiles.txt","r")
-outFile=open("newInputFiles.txt","w")
+files=open("skims.txt","r")
+outFile=open("newSkims.txt","w")
 
 for f in files:
     f=f[:-1]

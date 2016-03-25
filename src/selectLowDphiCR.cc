@@ -48,6 +48,10 @@ public :
 
   };
 
+  void postProcess( ) override{
+    histo->Write();
+  };
+
 };
 
 #endif

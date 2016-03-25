@@ -117,13 +117,15 @@ TChain* buildChain(TString inputFileList, TString substr, TString treeName){
 TChain* buildChain(vector<fileName> *fileVec, TString treeName){
 
   TChain* t = new TChain(treeName);
-  char temp[200];
+  char temp[500];
 
   for( vector<fileName>::iterator it = fileVec->begin() ; it != fileVec->end() ; ++it ){
     sprintf( temp , "root://cmsxrootd.fnal.gov//%s", it->Data() );
-    //cout << temp << endl;
+    cout << temp << endl;
     t->Add( temp );
   }// end loop over files
+
+  cout << "check" << endl;
 
   return t ;
 

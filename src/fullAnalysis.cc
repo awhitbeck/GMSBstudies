@@ -63,33 +63,33 @@ int main(int argc, char** argv){
   binCut SRhighBTags(ntuple,"SR_highBTags");
   SRhighBTags.minBTags=2; SRhighBTags.maxBTags=2;
   signalRegion SR_highBTags(ntuple,sampleTag,"SR_highBTags");
-  SR_highBTags.addProcessor(&SRhighBTags);
+  SR_highBTags.addProcessor(&SRhighBTags,1);
 
   binCut ldpCRhighBTagsCut(ntuple,"ldpCR_highBTags");
   ldpCRhighBTagsCut.minBTags=2; ldpCRhighBTagsCut.maxBTags=2;
   lowDphiCR ldpCR_highBTags(ntuple,sampleTag,"ldpCR_highBTags");
-  ldpCR_highBTags.addProcessor(&ldpCRhighBTagsCut);
+  ldpCR_highBTags.addProcessor(&ldpCRhighBTagsCut,1);
 
   binCut lepCRhighBTags(ntuple,"lepCR_highBTags");
   lepCRhighBTags.minBTags=2; lepCRhighBTags.maxBTags=2;
   leptonCR  lepCR_highBTags(ntuple,sampleTag,"lepCR_highBTags");
-  lepCR_highBTags.addProcessor(&lepCRhighBTags);
+  lepCR_highBTags.addProcessor(&lepCRhighBTags,1);
 
   // higgs tag
   binCut SRhiggsCut(ntuple,"SR_higgs");
   SRhiggsCut.minHiggsTags=2; SRhiggsCut.maxHiggsTags=2;
   signalRegion SR_higgs(ntuple,sampleTag,"SR_higgs");
-  SR_higgs.addProcessor(&SRhiggsCut);
+  SR_higgs.addProcessor(&SRhiggsCut,1);
 
   binCut ldpCRhiggsCut(ntuple,"ldpCR_higgs");
   ldpCRhiggsCut.minHiggsTags=2; ldpCRhiggsCut.maxHiggsTags=2;
   lowDphiCR ldpCR_higgs(ntuple,sampleTag,"ldpCR_higgs");
-  ldpCR_higgs.addProcessor(&ldpCRhiggsCut);
+  ldpCR_higgs.addProcessor(&ldpCRhiggsCut,1);
 
   binCut lepCRhiggsCut(ntuple,"lepCR_higgs");
   lepCRhiggsCut.minHiggsTags=2; lepCRhiggsCut.maxHiggsTags=2;
   leptonCR  lepCR_higgs(ntuple,sampleTag,"lepCR_higgs");
-  lepCR_higgs.addProcessor(&lepCRhiggsCut);
+  lepCR_higgs.addProcessor(&lepCRhiggsCut,1);
   
 
   signalRegion SR(ntuple,sampleTag);

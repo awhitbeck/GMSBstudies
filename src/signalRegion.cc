@@ -114,8 +114,8 @@ public :
   void analyze(){
     
     for( unsigned int iProc = 0 ; iProc < processorList->size() ; iProc++){
-      //cout << "ldpCR proc: " << iProc << endl; // " " << processorList->at(iProc)->moduleName << endl;
       if( ! processorList->at(iProc)->process() ) break;
+      cout << "ldpCR proc: " << iProc << " " << processorList->at(iProc)->moduleName << endl;
     }
 
   };

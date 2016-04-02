@@ -1,4 +1,5 @@
 from ROOT import *
+gROOT.SetBatch(True)
 
 gROOT.ProcessLine(".L ~/tdrstyle.C")
 gROOT.ProcessLine("setTDRStyle()")

@@ -18,8 +18,7 @@ public :
 
   TH1F* histo;
   TreeType* ntuple;
-  int NLSPmass;
-  int gluinoMass;
+  TString weightbranch;
 
   fillLeptonTruth()
     : filler<TreeType>("fillLeptonTruth"){
@@ -28,16 +27,20 @@ public :
   };
   
   fillLeptonTruth( TreeType* ntuple_ , 
-		 TString histotag )
+		   TString histotag ,
+		   TString weightbranch_ )
 	     : filler<TreeType>("fillLeptonTruth")
 	     {
 
 	       ntuple = ntuple_;
+	       weightbranch = weightbranch_;
+
 	       histo = new TH1F("leptonTruth_"+histotag,"leptonTruth_"+histotag,2,-0.5,1.5);
 	       ntuple->fChain->SetBranchStatus("Muons",1);	       
 	       ntuple->fChain->SetBranchStatus("Electrons",1);
 	       ntuple->fChain->SetBranchStatus("GenMus",1);
 	       ntuple->fChain->SetBranchStatus("GenEls",1);
+	       ntuple->fChain->SetBranchStatus(weightbranch,1);
 	       
 	     };
 
@@ -45,8 +48,6 @@ public :
 
     // assume that this has been done previously
     // ntuple->patchJetID();
-
-    histo->Fill( ntuple->photon_genMatched->at(ntuple->bestPhotonIndex->at(0) ) );
 
     vector<TLorentzVector> muons = *ntuple->Muons;
     vector<TLorentzVector> electrons = *ntuple->Electrons;
@@ -62,9 +63,9 @@ public :
 	}
       }
       if( matched ) 
-	histo->Fill(1);
+	histo->Fill(1.,ntuple->fChain->GetLeaf(weightbranch)->GetValue());
       else
-	histo->Fill(0);
+	histo->Fill(0.,ntuple->fChain->GetLeaf(weightbranch)->GetValue());
     }
 
     for( unsigned int i = 0 ; i < electrons.size() ; i++ ){
@@ -76,9 +77,9 @@ public :
 	}
       }
       if( matched ) 
-	histo->Fill(1);
+	histo->Fill(1.,ntuple->fChain->GetLeaf(weightbranch)->GetValue());
       else
-	histo->Fill(0);
+	histo->Fill(0.,ntuple->fChain->GetLeaf(weightbranch)->GetValue());
     }
 
 

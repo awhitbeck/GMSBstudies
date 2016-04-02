@@ -16,17 +16,20 @@ public :
 
   TH1F* histo;
   TreeType* ntuple;
+  TString label;
 
   selectBaseline()
     : processor<TreeType>("selectBaseline")
   {
     ntuple = 0; 
   };
-  selectBaseline( TreeType *ntuple_ )
+  selectBaseline( TreeType *ntuple_ ,
+		  TString label_ )
     : processor<TreeType>("selectBaseline")
   {
     ntuple = ntuple_;
-    histo = new TH1F("selectBaselineYields","selectBaselineYields",9,0.5,9.5);
+    label = label_;
+    histo = new TH1F("selectBaselineYields_"+label,"selectBaselineYields_"+label,9,0.5,9.5);
   };
 
   bool process( ) override {

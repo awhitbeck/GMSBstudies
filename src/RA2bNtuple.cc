@@ -1,4 +1,6 @@
+#ifndef RA2bNtuple_cxx
 #define RA2bNtuple_cxx
+
 #include "RA2bNtuple.h"
 #include <TH2.h>
 #include <TStyle.h>
@@ -41,3 +43,5 @@ void RA2bNtuple::Loop()
       // if (Cut(ientry) < 0) continue;
    }
 }
+
+#endif

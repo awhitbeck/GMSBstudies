@@ -13,17 +13,20 @@ public :
 
   TH1F* histo;
   TreeType* ntuple;
+  TString label;
 
   selectLeptonCR()
     : processor<TreeType>("selectLeptonCR")
   {
     ntuple = 0; 
   };
-  selectLeptonCR( TreeType *ntuple_ )
+  selectLeptonCR( TreeType *ntuple_ ,
+		  TString label_ )
     : processor<TreeType>("selectLeptonCR")
   {
     ntuple = ntuple_;
-    histo = new TH1F("leptonCRYields","leptonCRYields",9,0.5,9.5);
+    label = label_;
+    histo = new TH1F("leptonCRYields_"+label,"leptonCRYields_"+label,9,0.5,9.5);
   };
 
   bool process( ) override {

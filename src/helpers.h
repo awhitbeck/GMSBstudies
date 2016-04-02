@@ -1,3 +1,6 @@
+#ifndef HELPERS
+#define HELPERS
+
 #include "TString.h"
 #include "TChain.h"
 #include "TFile.h"
@@ -130,3 +133,5 @@ TChain* buildChain(vector<fileName> *fileVec, TString treeName){
   return t ;
 
 }
+
+#endif

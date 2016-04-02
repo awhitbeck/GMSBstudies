@@ -13,17 +13,20 @@ public :
 
   TH1F* histo;
   TreeType* ntuple;
+  TString label;
 
   selectLowDphiCR()
     : processor<TreeType>("selectLowDphiCR")
   {
     ntuple = 0; 
   };
-  selectLowDphiCR( TreeType *ntuple_ )
+  selectLowDphiCR( TreeType *ntuple_ ,
+		   TString label_ )
     : processor<TreeType>("selectLowDphiCR")
   {
     ntuple = ntuple_;
-    histo = new TH1F("lowDphiCRYields","lowDphiCRYields",6,0.5,6.5);
+    label = label_;
+    histo = new TH1F("lowDphiCRYields_"+label,"lowDphiCRYields_"+label,6,0.5,6.5);
   };
 
   bool process( ) override {

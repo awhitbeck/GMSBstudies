@@ -1135,10 +1135,10 @@ void RA2bNtuple::patchJetID(){
   MHT = mht.Pt();
   MHT_Phi = mht.Phi();
   
-  DeltaPhi1 = htJets.size()>=1&&htJets[0].Pt()>30.&&fabs(htJets[0].Eta())<2.4 ? fabs(mht.DeltaPhi( htJets[0] )) : 10. ;
-  DeltaPhi2 = htJets.size()>=2&&htJets[1].Pt()>30.&&fabs(htJets[1].Eta())<2.4 ? fabs(mht.DeltaPhi( htJets[1] )) : 10. ;
-  DeltaPhi3 = htJets.size()>=3&&htJets[2].Pt()>30.&&fabs(htJets[2].Eta())<2.4 ? fabs(mht.DeltaPhi( htJets[2] )) : 10. ;
-  DeltaPhi4 = htJets.size()>=4&&htJets[3].Pt()>30.&&fabs(htJets[3].Eta())<2.4 ? fabs(mht.DeltaPhi( htJets[3] )) : 10. ;
+  DeltaPhi1 = htJets.size()>=1 ? fabs(mht.DeltaPhi( htJets[0] )) : 10. ;
+  DeltaPhi2 = htJets.size()>=2 ? fabs(mht.DeltaPhi( htJets[1] )) : 10. ;
+  DeltaPhi3 = htJets.size()>=3 ? fabs(mht.DeltaPhi( htJets[2] )) : 10. ;
+  DeltaPhi4 = htJets.size()>=4 ? fabs(mht.DeltaPhi( htJets[3] )) : 10. ;
 
 }
 

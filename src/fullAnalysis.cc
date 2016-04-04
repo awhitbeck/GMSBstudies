@@ -77,21 +77,52 @@ int main(int argc, char** argv){
 
   // higgs tag
   binCut SRhiggsCut(ntuple,"SR_higgs");
-  SRhiggsCut.minHiggsTags=2; SRhiggsCut.maxHiggsTags=2;
+  SRhiggsCut.minHiggsTags=1; SRhiggsCut.maxHiggsTags=1;
   signalRegion SR_higgs(ntuple,sampleTag,"SR_higgs");
   SR_higgs.addProcessor(&SRhiggsCut,1);
 
   binCut ldpCRhiggsCut(ntuple,"ldpCR_higgs");
-  ldpCRhiggsCut.minHiggsTags=2; ldpCRhiggsCut.maxHiggsTags=2;
+  ldpCRhiggsCut.minHiggsTags=1; ldpCRhiggsCut.maxHiggsTags=1;
   lowDphiCR ldpCR_higgs(ntuple,sampleTag,"ldpCR_higgs");
   ldpCR_higgs.addProcessor(&ldpCRhiggsCut,1);
 
   binCut lepCRhiggsCut(ntuple,"lepCR_higgs");
-  lepCRhiggsCut.minHiggsTags=2; lepCRhiggsCut.maxHiggsTags=2;
+  lepCRhiggsCut.minHiggsTags=1; lepCRhiggsCut.maxHiggsTags=1;
   leptonCR  lepCR_higgs(ntuple,sampleTag,"lepCR_higgs");
   lepCR_higgs.addProcessor(&lepCRhiggsCut,1);
-  
 
+  // 2higgs tag
+  binCut SR2higgsCut(ntuple,"SR_2higgs");
+  SR2higgsCut.minHiggsTags=2; SR2higgsCut.maxHiggsTags=2;
+  signalRegion SR_2higgs(ntuple,sampleTag,"SR_2higgs");
+  SR_2higgs.addProcessor(&SR2higgsCut,1);
+
+  binCut ldpCR2higgsCut(ntuple,"ldpCR_2higgs");
+  ldpCR2higgsCut.minHiggsTags=2; ldpCR2higgsCut.maxHiggsTags=2;
+  lowDphiCR ldpCR_2higgs(ntuple,sampleTag,"ldpCR_2higgs");
+  ldpCR_2higgs.addProcessor(&ldpCR2higgsCut,1);
+
+  binCut lepCR2higgsCut(ntuple,"lepCR_2higgs");
+  lepCR2higgsCut.minHiggsTags=2; lepCR2higgsCut.maxHiggsTags=2;
+  leptonCR  lepCR_2higgs(ntuple,sampleTag,"lepCR_2higgs");
+  lepCR_2higgs.addProcessor(&lepCR2higgsCut,1);
+
+  // W/Z tag
+  binCut SRVtagCut(ntuple,"SR_Vtag");
+  SRVtagCut.minVTags=1; SRVtagCut.maxVTags=1;
+  signalRegion SR_Vtag(ntuple,sampleTag,"SR_Vtag");
+  SR_Vtag.addProcessor(&SRVtagCut,1);
+
+  binCut ldpCRVtagCut(ntuple,"ldpCR_Vtag");
+  ldpCRVtagCut.minVTags=1; ldpCRVtagCut.maxVTags=1;
+  lowDphiCR ldpCR_Vtag(ntuple,sampleTag,"ldpCR_Vtag");
+  ldpCR_Vtag.addProcessor(&ldpCRVtagCut,1);
+
+  binCut lepCRVtagCut(ntuple,"lepCR_Vtag");
+  lepCRVtagCut.minVTags=1; lepCRVtagCut.maxVTags=1;
+  leptonCR  lepCR_Vtag(ntuple,sampleTag,"lepCR_Vtag");
+  lepCR_Vtag.addProcessor(&lepCRVtagCut,1);
+  
   signalRegion SR(ntuple,sampleTag);
   lowDphiCR ldpCR(ntuple,sampleTag);
   leptonCR  lepCR(ntuple,sampleTag);
@@ -112,6 +143,12 @@ int main(int argc, char** argv){
     SR_higgs.analyze();
     ldpCR_higgs.analyze();
     lepCR_higgs.analyze();
+    SR_2higgs.analyze();
+    ldpCR_2higgs.analyze();
+    lepCR_2higgs.analyze();
+    SR_Vtag.analyze();
+    ldpCR_Vtag.analyze();
+    lepCR_Vtag.analyze();
 
   }
 
@@ -126,8 +163,16 @@ int main(int argc, char** argv){
   ldpCR_highBTags.postProcess();
   lepCR_highBTags.postProcess();
   SR_higgs.postProcess();
+  SRhiggsCut.postProcess();
   ldpCR_higgs.postProcess();
   lepCR_higgs.postProcess();
+  SR_2higgs.postProcess();
+  ldpCR_2higgs.postProcess();
+  lepCR_2higgs.postProcess();
+  SR_Vtag.postProcess();
+  SRVtagCut.postProcess();
+  ldpCR_Vtag.postProcess();
+  lepCR_Vtag.postProcess();
   
   outFile->Close();
   

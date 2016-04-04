@@ -21,6 +21,9 @@ public :
   int minHiggsTags,maxHiggsTags,minVTags,maxVTags;
   double minMHT,maxMHT,minHT,maxHT;
 
+  TH1F* prunedMassHiggs;
+  TH1F* prunedMassV;
+
   selectBin()
     : processor<TreeType>("selectBin")
   {
@@ -52,7 +55,9 @@ public :
     maxVTags = maxVTags_;
 
     histo = new TH1F("selectBin_"+binLabel_+"_Yields","selectBin_"+binLabel_+"_Yields",6,0.5,6.5);
-
+    prunedMassHiggs = new TH1F("prunedMassHiggs_"+binLabel,"prunedMassHiggs_"+binLabel,50,0.,150.);
+    prunedMassV = new TH1F("prunedMassV_"+binLabel,"prunedMassV_"+binLabel,50,0.,150.);
+    
     ntuple->fChain->SetBranchStatus("BTags",1);
     ntuple->fChain->SetBranchStatus("NJets",1);
     ntuple->fChain->SetBranchStatus("MHT",1);
@@ -107,18 +112,20 @@ public :
       std::cout << "AK8jet subjet2 CSV: " << ntuple->JetsAK8_bDiscriminatorSubjet2CSV->at(j) << std::endl;
       std::cout << "AK8jet tau12: " << ntuple->JetsAK8_NsubjettinessTau1->at(j)/ntuple->JetsAK8_NsubjettinessTau2->at(j) << std::endl;
       */
-
-      if( ntuple->JetsAK8_prunedMass->at(j) < 130. && 
-	  ntuple->JetsAK8_prunedMass->at(j) > 100. &&
-	  ntuple->JetsAK8_bDiscriminatorSubjet1CSV->at(j) > .89 &&
+      
+      if( ntuple->JetsAK8_bDiscriminatorSubjet1CSV->at(j) > .89 &&
 	  ntuple->JetsAK8_bDiscriminatorSubjet2CSV->at(j) > .89 &&
 	  ntuple->JetsAK8_NsubjettinessTau1->at(j)/ntuple->JetsAK8_NsubjettinessTau2->at(j) < 0.6 ){
-	numHiggsTags++;
+	prunedMassHiggs->Fill(ntuple->JetsAK8_prunedMass->at(j));
+	if( ntuple->JetsAK8_prunedMass->at(j) < 130. && 
+	    ntuple->JetsAK8_prunedMass->at(j) > 100. )
+	  numHiggsTags++;
       }
-      if( ntuple->JetsAK8_prunedMass->at(j) < 60. && 
-	  ntuple->JetsAK8_prunedMass->at(j) > 100. &&
-	  ntuple->JetsAK8_NsubjettinessTau1->at(j)/ntuple->JetsAK8_NsubjettinessTau2->at(j) < 0.6 ){
-	numVTags++;
+      if( ntuple->JetsAK8_NsubjettinessTau1->at(j)/ntuple->JetsAK8_NsubjettinessTau2->at(j) < 0.6 ){
+	prunedMassV->Fill(ntuple->JetsAK8_prunedMass->at(j));
+	if( ntuple->JetsAK8_prunedMass->at(j) < 60. && 
+	    ntuple->JetsAK8_prunedMass->at(j) > 100. )
+	  numVTags++;
       }
 
     } 
@@ -135,6 +142,8 @@ public :
 
   void postProcess( ) override{
     histo->Write();
+    prunedMassV->Write();
+    prunedMassHiggs->Write();
   };
 
 };

@@ -115,7 +115,7 @@ public :
     
     for( unsigned int iProc = 0 ; iProc < processorList->size() ; iProc++){
       if( ! processorList->at(iProc)->process() ) break;
-      cout << "ldpCR proc: " << iProc << " " << processorList->at(iProc)->moduleName << endl;
+      //cout << "ldpCR proc: " << iProc << " " << processorList->at(iProc)->moduleName << endl;
     }
 
   };
@@ -133,7 +133,7 @@ public :
     DeltaPhi3histo->histo->Write();
     DeltaPhi4histo->histo->Write();
     photonTruth->histo->Write();
-
+    
   };
 
 };

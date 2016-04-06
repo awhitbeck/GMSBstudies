@@ -113,18 +113,18 @@ public :
       std::cout << "AK8jet tau12: " << ntuple->JetsAK8_NsubjettinessTau1->at(j)/ntuple->JetsAK8_NsubjettinessTau2->at(j) << std::endl;
       */
       
-      if( ntuple->JetsAK8_bDiscriminatorSubjet1CSV->at(j) > .89 &&
-	  ntuple->JetsAK8_bDiscriminatorSubjet2CSV->at(j) > .89 &&
-	  ntuple->JetsAK8_NsubjettinessTau1->at(j)/ntuple->JetsAK8_NsubjettinessTau2->at(j) < 0.6 ){
+      if( (ntuple->JetsAK8_bDiscriminatorSubjet1CSV->at(j) > .89 ||
+	   ntuple->JetsAK8_bDiscriminatorSubjet2CSV->at(j) > .89 ) &&
+	  ntuple->JetsAK8_NsubjettinessTau2->at(j)/ntuple->JetsAK8_NsubjettinessTau1->at(j) < 0.6 ){
 	prunedMassHiggs->Fill(ntuple->JetsAK8_prunedMass->at(j));
 	if( ntuple->JetsAK8_prunedMass->at(j) < 130. && 
 	    ntuple->JetsAK8_prunedMass->at(j) > 100. )
 	  numHiggsTags++;
       }
-      if( ntuple->JetsAK8_NsubjettinessTau1->at(j)/ntuple->JetsAK8_NsubjettinessTau2->at(j) < 0.6 ){
+      if( ntuple->JetsAK8_NsubjettinessTau2->at(j)/ntuple->JetsAK8_NsubjettinessTau1->at(j) < 0.6 ){
 	prunedMassV->Fill(ntuple->JetsAK8_prunedMass->at(j));
-	if( ntuple->JetsAK8_prunedMass->at(j) < 60. && 
-	    ntuple->JetsAK8_prunedMass->at(j) > 100. )
+	if( ntuple->JetsAK8_prunedMass->at(j) < 100. && 
+	    ntuple->JetsAK8_prunedMass->at(j) > 60. )
 	  numVTags++;
       }
 
